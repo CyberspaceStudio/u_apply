@@ -1,6 +1,6 @@
 <template>
   <div>
-    mine页
+    preview页
   </div>
 </template>
 

@@ -1,13 +1,37 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/logs/main",
-    "pages/counter/main"
+    "pages/depart/main",
+    "pages/counter/main",
+    "pages/upload/main",
+    "pages/preview/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "志愿圈",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#101010",
+    "borderStyle": "black" ,
+       "list": [{
+         "selectedIconPath": "/static/images/icons/classification (3).png",
+         "iconPath": "/static/images/icons/classification.png",
+           "pagePath": "pages/depart/main",
+           "text": "部门"
+         }, {
+           "selectedIconPath": "/static/images/icons/moments2.png",
+           "iconPath": "/static/images/icons/moments.png",
+         "pagePath": "pages/index/main",
+         "text": "志愿圈"
+         },{
+           "selectedIconPath": "/static/images/icons/mine2.png",
+           "iconPath": "/static/images/icons/mine.png",
+           "pagePath": "pages/counter/main",
+           "text": "我的主页"
+         }
+       ]
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    mine页
+    upload页面
   </div>
 </template>
 

@@ -1,0 +1,35 @@
+/*
+* 设置宽度自适应
+*/
+$full_width:100%;
+
+
+/*
+* iphone5 (320*568)
+*/
+$scale:2.34375rpx;
+
+/*
+  适配单位转换
+*/
+@function cr($number){
+  @return ($number * $scale)
+}
+
+/*
+* 浮动布局
+*/
+@mixin flex_row{
+  display: flex;
+  flex-direction: row;
+}
+@mixin flex_column{
+  display: flex;
+  flex-direction: column;
+}
+@mixin flex_between{
+  justify-content: space-between;
+}
+@mixin flex_around{
+  justify-content: space-around;
+}
