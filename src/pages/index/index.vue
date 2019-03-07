@@ -1,14 +1,24 @@
 <template>
   <div class="container">
     <div class="fixed-part">
-      <Title :showCircle="true"></Title>
+      <Title :showCircle="true" @submitCancel="changeToast"></Title>
       <nav class="nav">
         <div>最新</div>
         <div @click="goDepart">部门</div>
       </nav>
     </div>
     <index-content></index-content>
-    <bottom-toast :show="showToast"></bottom-toast>
+    <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast">
+      <ul class="toast-content">
+        <li>11111</li>
+        <li>11111</li>
+        <li>11111</li>
+        <li>11111</li>
+        <li>11111</li>
+        <li>999999</li>
+      </ul>
+    </bottom-toast>
+    <!-- <bottom-toast :show="showToast"></bottom-toast> -->
     <add-btn></add-btn>
   </div>
 </template>
@@ -17,12 +27,14 @@
   import Title from '../../components/Title'
   import addBtn from '../../components/add-btn'
   import indexContent from '../../components/index-content'
-  import bottomToast from '../../components/bottom-toast'
+  import bottomToast from '../../components/bottomToa'
+  // import bottomToast from '../../components/bottom-toast'
 
   export default {
     data(){
       return {
-        showToast:true
+        showToast: false,
+
       }
     },
     components: {
@@ -33,6 +45,12 @@
         wx.switchTab({
           url:'../depart/main'
         })
+      },
+      onCancel() {
+        this.showToast = false
+      },
+      changeToast() {
+        this.showToast = true
       }
     },
     onReachBottom(){
@@ -76,6 +94,14 @@
             color: #000;
           }
         }
+      }
+    }
+    .toast-content{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      li{
+        height: 60rpx;
       }
     }
   }

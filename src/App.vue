@@ -1,12 +1,10 @@
 <script>
-  export default {
-
-  }
+export default {};
 </script>
 
 <style lang="scss">
-  $fill_height:210rpx;
-/* this rule will be remove */
+@import "./style/public";
+$fill_height: 210rpx;
 * {
   transition: width 2s;
   -moz-transition: width 2s;
