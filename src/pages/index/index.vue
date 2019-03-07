@@ -9,14 +9,10 @@
     </div>
     <index-content></index-content>
     <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast">
-      <ul class="toast-content">
-        <li>11111</li>
-        <li>11111</li>
-        <li>11111</li>
-        <li>11111</li>
-        <li>11111</li>
-        <li>999999</li>
-      </ul>
+      <div class="toast-container">
+        <div class="icon1"><img src="/static/images/icons/wechat.png"/><span>点击分享到微信</span></div>
+        <div class="icon1"><img src="/static/images/icons/wechat.png"/><span>生成分享二维码</span></div>
+      </div>
     </bottom-toast>
     <!-- <bottom-toast :show="showToast"></bottom-toast> -->
     <add-btn></add-btn>
@@ -102,6 +98,25 @@
       align-items: center;
       li{
         height: 60rpx;
+      }
+    }
+    .toast-container{
+      display: flex;
+      padding: 0 60rpx;
+      justify-content: space-around;
+      height: 236rpx;
+      align-items: center;
+      .icon1{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24rpx;
+        max-width: 100rpx;
+        text-align: center;
+        img{
+          height: 90rpx;
+          width: 90rpx;
+        }
       }
     }
   }

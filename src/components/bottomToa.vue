@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="backsize" @touchstart="onCancel"></div>
+    <div class="backsize change-color" @touchstart="onCancel"></div>
     <div class="bottom_toast animation-up">
       <slot>
-        <div class="test">暂时没有待渲染的组件哦</div>
+        <div class="test">暂时没有数据哦</div>
       </slot>
       <button class="bnt-cancle animation-up" @click="onCancel">取消</button>
     </div>
@@ -44,6 +44,7 @@ export default {
     right: 0rpx;
     height: 80rpx;
     line-height: 80rpx;
+    font-size: 32rpx;
   }
 }
 .test {
@@ -53,6 +54,10 @@ export default {
 .animation-up {
   bottom: 0;
   animation: bottom-toast-up 0.1s linear;
+}
+.change-color {
+  opacity: 0.7;
+  animation: change-to-black 0.15s linear;
 }
 .animation-down {
   bottom: -400rpx;
@@ -74,10 +79,17 @@ export default {
     bottom: -400rpx;
   }
 }
+@keyframes change-to-black {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
+}
 .backsize{
   background: black;
   filter: alpha(opacity=60);
-  opacity: 0.7;
   position: fixed;
   top: 0;
   width: 100vw;
