@@ -33,3 +33,7 @@ $scale:2.34375rpx;
 @mixin flex_around{
   justify-content: space-around;
 }
+@mixin config_width_height($width:auto,$height:auto) {
+  height: $height;
+  width: $width;
+}

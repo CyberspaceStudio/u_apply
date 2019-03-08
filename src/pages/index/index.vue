@@ -56,7 +56,6 @@
 </script>
 
 <style scoped lang="scss">
-  @import '../../style/common';
 
   .container{
     width: $full_width;

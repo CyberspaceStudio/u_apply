@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    import { scanCode, authorizeConfig, save, jumpTo} from '@/utils/wxFunc'
+    import { showModal, showToast, showLoading, hideLoading } from '@/utils/wxToast'
     export default {
         name: "add-btn",
       data(){
@@ -14,9 +16,7 @@
       },
       methods:{
           goUpload(){
-            wx.navigateTo({
-              url:'../upload/main'
-            })
+            jumpTo('../sendPicture/main')
           }
       }
     }

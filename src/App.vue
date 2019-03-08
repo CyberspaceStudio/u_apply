@@ -3,7 +3,6 @@ export default {};
 </script>
 
 <style lang="scss">
-@import "./style/public";
 $fill_height: 210rpx;
 * {
   transition: width 2s;
