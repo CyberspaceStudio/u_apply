@@ -1,6 +1,6 @@
 <template>
   <div class=".container">
-    <Title :showCircle="false"></Title>
+    <Title :showCircle=false></Title>
   </div>
 
 </template>
