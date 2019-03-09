@@ -19,6 +19,7 @@
 import loadedPic from "@/components/loaded-pic";
 import promisify from "@/utils/promisify";
 import { chooseImage } from "@/utils/wxFunc";
+import {showToast} from '@/utils/wxToast'
 export default {
   data() {
     return {
@@ -33,11 +34,17 @@ export default {
   methods: {
     async upLoadPicture() {
       const res = await chooseImage({
-        count: 1,
+        count: 9,
         sizeType: ["original", "compressed"],
         sourceType: ["album", "camera"]
       });
-      this.imgUrl.push(res.tempFilePaths);
+      if(res.tempFilePaths.length + this.imgUrl.length > 9)
+        showToast('图片最多上传9张')
+      res.tempFilePaths.forEach(element => {
+        if(this.imgUrl.length < 9)
+          this.imgUrl.push(element);
+      });
+      console.log(this.imgUrl)
     },
     deletePicture(data) {
       this.imgUrl.splice(data.index, 1);

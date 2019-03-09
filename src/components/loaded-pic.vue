@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div v-for="(urlItem, index) in url" :key="urlItem"  class="pictures" @click="imgYu(urlItem)">
-      <img :src="urlItem" class="shareImg">
-      <img src="/static/images/icons/close.png" class="close" @click.stop="deleteImg(index)"/>
+      <img mode="aspectFill" :src="urlItem" class="shareImg">
+      <img src="/static/images/icons/shut-down.png" class="close" @click.stop="deleteImg(index)"/>
     </div>
     <div class="pictures" v-if="url.length < 9" @click="addPic">
-      <img class="plus" src="/static/images/icons/plus.png">
+      <img class="plus" src="/static/images/icons/plus2.png">
     </div>
   </div>
 </template>
