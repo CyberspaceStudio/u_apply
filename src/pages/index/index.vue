@@ -2,10 +2,6 @@
   <div class="container" ref="contain">
     <div class="fixed-part">
       <Title :showCircle="true" @submitCancel="changeToast"></Title>
-      <nav class="nav">
-        <div>最新</div>
-        <div @click="goDepart">部门</div>
-      </nav>
     </div>
     <index-content></index-content>
     <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast">

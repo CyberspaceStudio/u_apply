@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/home/main",
     "pages/index/main",
+    "pages/home/main",
     "pages/sendPicture/main",
     "pages/depart/main",
     "pages/counter/main",
