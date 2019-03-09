@@ -1,48 +1,45 @@
 <template>
-    <div class="container">
-      <img :src="showCircle?bg_img[0]:bg_img[1]" :class="showCircle?'index-bg-img':'depart-bg-img'">
-      <div class="content" v-if="showCircle">
-        <span>志愿圈</span>
-        <img :src="shareIcon" @click="openToast"/>
-      </div>
-      <div class="content" v-else>
-        <div class="content_depart">
-          <span class="depart-title">志愿时光</span>
-          <span class="depart-name">{{depart}}<p class="depart-after"></p></span>
-        </div>
-        <img :src="classificationIcon">
-      </div>
+  <div class="container">
+    <img :src="showCircle?bg_img[0]:bg_img[1]" :class="showCircle?'index-bg-img':'depart-bg-img'">
+    <div class="content" v-if="showCircle">
+      <span>志愿圈</span>
+      <img :src="shareIcon" @click="clickShare">
     </div>
+    <div class="content" v-else>
+      <div class="content_depart">
+        <span class="depart-title">志愿时光</span>
+        <span class="depart-name">{{depart}}</span>
+      </div>
+      <img :src="classificationIcon">
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "Title",
-      props:{
-        showCircle:{
-          type:Boolean
-          },
-        depart:{
-          type:String,
-          default:'工作室'
-        }
-      },
-      data(){
-          return {
-            shareIcon:'../../static/images/icons/share.png',
-            classificationIcon:'../../static/images/icons/classification4.png',
-            bg_img:[
-              '/static/images/1.png',
-              '/static/images/4.png'
-            ]
-          }
-      },
-      methods:{
-        openToast(){
-          this.$emit('open');
-        }
-      }
+export default {
+  name: "Title",
+  props: {
+    showCircle: {
+      type: Boolean
+    },
+    depart: {
+      type: String,
+      default: "工作室"
     }
+  },
+  data() {
+    return {
+      shareIcon: "../../static/images/icons/share.png",
+      classificationIcon: "../../static/images/icons/classification4.png",
+      bg_img: ["/static/images/1.png", "/static/images/4.png"]
+    };
+  },
+  methods: {
+    clickShare() {
+      this.$emit("submitCancel");
+    }
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -114,10 +111,16 @@
           size:cr(20);
         }
       }
-      img{
-        width: cr(22);
-        height: cr(22);
+    }
+    span {
+      font: {
+        size: cr(20);
       }
     }
+    img {
+      width: cr(22);
+      height: cr(22);
+    }
   }
+}
 </style>

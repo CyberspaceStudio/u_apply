@@ -1,6 +1,8 @@
 {
   "pages": [
+    "pages/home/main",
     "pages/index/main",
+    "pages/sendPicture/main",
     "pages/depart/main",
     "pages/counter/main",
     "pages/upload/main",

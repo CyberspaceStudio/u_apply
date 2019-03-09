@@ -10,6 +10,16 @@ export const authorizeConfig = async ()=>{
 export const save = async (filepPath)=>{
     return promisify(wx.saveFile)({tempFilePath:filepPath,})
 }
+export const jumpTo = (url)=>{
+    wx.navigateTo({
+        url: url
+    })
+}
+
+// config是对wx.chooseImage的相关参数配置，详见微信小程序官方文档
+export const chooseImage = (config)=>{
+    return promisify(wx.chooseImage)(config)
+}
 
 //微信小程序扫码
 // export const scanCode = async ()=>{

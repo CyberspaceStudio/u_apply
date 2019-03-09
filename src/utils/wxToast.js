@@ -36,6 +36,6 @@ const hideLoading = ()=>{
 export{
     showModal,
     showToast,
-    showLoading,
-    hideLoading
+    showLoading,    
+    hideLoading,
 }
