@@ -1,123 +1,81 @@
 <template>
-  <div class="container">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+  <div class="container" ref="contain">
+    <div class="fixed-part">
+      <Title :showCircle=true @open="()=>showToast=true"></Title>
     </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-    <button type="primary" open-type="share" data-name="pageShare" id="share">点击分享</button>
+    <index-content></index-content>
+    <bottom-toast :show="showToast" :index="toastIndex" @close="()=>showToast=false"></bottom-toast>
+    <add-btn></add-btn>
   </div>
-
 </template>
 
 <script>
-import card from '@/components/card'
+  import Title from '../../components/Title'
+  import addBtn from '../../components/add-btn'
+  import indexContent from '../../components/index-content'
+  import bottomToast from '../../components/bottom-toast'
 
-export default {
-  data () {
-    return {
-      motto: 'Hello World',
-      userInfo: {}
-    }
-  },
-
-  components: {
-    card
-  },
-
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
+  export default {
+    mounted(){
+      this.$nextTick(function(){
+        // this.$refs.text.value='这里是';
       })
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
+    data(){
+      return {
+        showToast:false,
+        toastIndex:0
+      }
+    },
+    components: {
+      Title,addBtn,indexContent,bottomToast
+    },
+    methods:{
+
+    },
+    onShareAppMessage(res){
+      return {
+        title:'志愿圈',
+        path:'/pages/index/main'
+      }
+    },
+    onReachBottom(){
+      console.log('数据获取中...')
     }
-  },
-  onShareAppMessage(res){
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-      //区分按钮分享x
-        return {
-          title: '志愿圈',
-          success: function(res) {
-            // 转发成功
-            console.log(res)
-          },
-          fail: function(res) {
-            // 转发失败
-            console.log(res)
+  }
+</script>
+
+<style scoped lang="scss">
+  @import '../../style/common.scss';
+  .container{
+    width: $full_width;
+    height: $full_width;
+    @include flex_column;
+    .fixed-part{
+      width: $full_width;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: white;
+      .nav{
+        width: $full_width;
+        margin-top: cr(14);
+        @include flex_row;
+        font-size:cr(12);
+        div{
+          width: cr(28);
+          height: cr(20);
+          margin-left: cr(15);
+          text-align: center;;
+          line-height: cr(20);
+          color: #B3B3B3;
+          &:nth-of-type(1){
+            border-bottom:cr(2) solid #000;
+            color: #000;
           }
         }
       }
-  },
-  created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    }
   }
-}
-</script>
-
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
 </style>
