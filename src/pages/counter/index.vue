@@ -1,6 +1,6 @@
 <template>
   <div>
-    mine页
+    
   </div>
 </template>
 

@@ -1,14 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container" ref="contain">
     <div class="fixed-part">
-      <Title :showCircle="true"></Title>
-      <nav class="nav">
-        <div>最新</div>
-        <div @click="goDepart">部门</div>
-      </nav>
+      <Title :showCircle=true @open="()=>showToast=true"></Title>
     </div>
     <index-content></index-content>
-    <bottom-toast :show="showToast"></bottom-toast>
+    <bottom-toast :show="showToast" :index="toastIndex" @close="()=>showToast=false"></bottom-toast>
     <add-btn></add-btn>
   </div>
 </template>
@@ -20,19 +16,27 @@
   import bottomToast from '../../components/bottom-toast'
 
   export default {
+    mounted(){
+      this.$nextTick(function(){
+        // this.$refs.text.value='这里是';
+      })
+    },
     data(){
       return {
-        showToast:true
+        showToast:false,
+        toastIndex:0
       }
     },
     components: {
       Title,addBtn,indexContent,bottomToast
     },
     methods:{
-      goDepart(){
-        wx.switchTab({
-          url:'../depart/main'
-        })
+
+    },
+    onShareAppMessage(res){
+      return {
+        title:'志愿圈',
+        path:'/pages/index/main'
       }
     },
     onReachBottom(){
@@ -42,8 +46,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '../../style/common';
-
+  @import '../../style/common.scss';
   .container{
     width: $full_width;
     height: $full_width;
@@ -59,9 +62,7 @@
         width: $full_width;
         margin-top: cr(14);
         @include flex_row;
-        font:{
-          size:cr(12);
-        }
+        font-size:cr(12);
         div{
           width: cr(28);
           height: cr(20);
@@ -70,9 +71,7 @@
           line-height: cr(20);
           color: #B3B3B3;
           &:nth-of-type(1){
-            border:{
-              bottom:cr(2) solid #000;
-            }
+            border-bottom:cr(2) solid #000;
             color: #000;
           }
         }

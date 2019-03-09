@@ -23,8 +23,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '../style/common';
-
+  @import '../style/common.scss';
   .container{
     width: cr(45);
     height: cr(45);

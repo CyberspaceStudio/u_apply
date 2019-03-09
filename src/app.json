@@ -9,7 +9,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "志愿圈",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -17,14 +17,14 @@
     "selectedColor": "#101010",
     "borderStyle": "black" ,
        "list": [{
-         "selectedIconPath": "/static/images/icons/classification (3).png",
+         "selectedIconPath": "/static/images/icons/classification2.png",
          "iconPath": "/static/images/icons/classification.png",
            "pagePath": "pages/depart/main",
            "text": "部门"
          }, {
            "selectedIconPath": "/static/images/icons/moments2.png",
            "iconPath": "/static/images/icons/moments.png",
-         "pagePath": "pages/index/main",
+         "pagePath": "pages/index/main",  
          "text": "志愿圈"
          },{
            "selectedIconPath": "/static/images/icons/mine2.png",
