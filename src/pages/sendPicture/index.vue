@@ -44,7 +44,6 @@ export default {
         if(this.imgUrl.length < 9)
           this.imgUrl.push(element);
       });
-      console.log(this.imgUrl)
     },
     deletePicture(data) {
       this.imgUrl.splice(data.index, 1);

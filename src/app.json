@@ -6,7 +6,8 @@
     "pages/depart/main",
     "pages/counter/main",
     "pages/upload/main",
-    "pages/preview/main"
+    "pages/preview/main",
+    "pages/medal/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
