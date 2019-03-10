@@ -18,7 +18,7 @@ export default {
     },
     imgYu(url) {
       var src = url; //获取data-src
-      var imgList = url; //获取data-list
+      var imgList = [url]; // 获取data-list
       //图片预览
       wx.previewImage({
         current: src, // 当前显示图片的http链接
