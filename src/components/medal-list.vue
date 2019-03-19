@@ -11,16 +11,25 @@
             </div>
             <aside class="item-content-right"></aside>
         </div>
-        <footer class="item-footer">
+        <footer class="item-footer" @click="showToast">
             <span>奖章数 12</span>
             <span>查看赠友列表</span>
         </footer>
     </div>
 </template>
 <script>
+import bottomToast from '@/components/medal-list'
 export default {
     data() {
 
+    },
+    components: {
+        bottomToast
+    },
+    methods: {
+        showToast() {
+            this.$emit('showToast')
+        }
     }
 }
 </script>

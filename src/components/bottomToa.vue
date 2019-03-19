@@ -27,7 +27,7 @@ export default {
   background: white;
   position: fixed;
   width: 100vw;
-  max-height: 400rpx;
+  max-height: 774rpx;
   overflow: scroll;
   box-sizing: border-box;
   .close {
@@ -49,7 +49,6 @@ export default {
 }
 .test {
   text-align: center;
-  color: white;
 }
 .animation-up {
   bottom: 0;
@@ -64,10 +63,10 @@ export default {
   animation: bottom-toast-down 0.1s linear;
 }
 @keyframes bottom-toast-up {
-  from {
+  0% {
     bottom: -400rpx;
   }
-  to {
+  100% {
     bottom: 0;
   }
 }
@@ -80,10 +79,10 @@ export default {
   }
 }
 @keyframes change-to-black {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  100% {
     opacity: 0.7;
   }
 }
