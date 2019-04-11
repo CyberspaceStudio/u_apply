@@ -8,9 +8,9 @@
     <div class="content" v-else>
       <div class="content_depart">
         <span class="depart-title">志愿时光</span>
-        <span class="depart-name">{{depart}}</span>
+        <span class="depart-name halfBackground">{{depart}}</span>
       </div>
-      <img :src="classificationIcon">
+      <img :src="classificationIcon" class='img-share'>
     </div>
   </div>
 </template>
@@ -43,7 +43,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../style/common.scss";
 .container {
   width: $full_width;
   height: cr(60);
@@ -55,7 +54,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: -1;
   }
   .depart-bg-img {
     width: 100%;

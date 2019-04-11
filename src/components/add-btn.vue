@@ -11,7 +11,7 @@
         name: "add-btn",
       data(){
           return{
-            uploadIcon:'../../static/images/icons/plus.png'
+            uploadIcon:'/static/images/icons/plus3.png'
           }
       },
       methods:{
