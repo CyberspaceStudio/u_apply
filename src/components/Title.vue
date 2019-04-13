@@ -8,9 +8,9 @@
     <div class="content" v-else>
       <div class="content_depart">
         <span class="depart-title">志愿时光</span>
-        <span class="depart-name halfBackground">{{depart}}</span>
+        <span class="depart-name halfBackground">{{currDepart}}</span>
       </div>
-      <img :src="classificationIcon" class='img-share'>
+      <img :src="classificationIcon" class='img-share' @click='showToast'>
     </div>
   </div>
 </template>
@@ -22,9 +22,9 @@ export default {
     showCircle: {
       type: Boolean
     },
-    depart: {
+    currDepart: {
       type: String,
-      default: "工作室"
+      default: "网络技术工作室"
     }
   },
   data() {
@@ -37,6 +37,11 @@ export default {
   methods: {
     clickShare() {
       this.$emit("submitCancel");
+      wx.hideTabBar({})
+    },
+    showToast(){
+      this.$emit('cancel')
+      wx.hideTabBar({})
     }
   }
 };

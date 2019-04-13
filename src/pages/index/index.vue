@@ -59,7 +59,6 @@ export default {
         jumpTo('/pages/authorize/main',{beforePath:`${this.currPagePath}`})
       }
     }).catch(err=>{
-      showModal('出现未知错误')
     })
   }
 };
