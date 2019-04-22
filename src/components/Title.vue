@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="title">
     <img :src="showCircle?bg_img[0]:bg_img[1]" :class="showCircle?'index-bg-img':'depart-bg-img'">
     <div class="content" v-if="showCircle">
       <span>志愿圈</span>
@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      imgUrl: this.GLOBAL.localImg,
       shareIcon: "../../static/images/icons/share.png",
       classificationIcon: "../../static/images/icons/classification4.png",
       bg_img: ["/static/images/1.png", "/static/images/4.png"]
@@ -48,11 +49,22 @@ export default {
 </script>
 
 <style scoped lang="scss">
+<<<<<<< HEAD
+.title {
+=======
 .container {
+>>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
   width: $full_width;
   height: cr(60);
   position: relative;
   overflow: hidden;
+  &-class{
+    position: absolute;
+    right: 0;
+    width: 60rpx;
+    height: 60rpx;
+    top: 20rpx;
+  }
   .index-bg-img {
     width: cr(100);
     height: cr(80);
@@ -96,17 +108,7 @@ export default {
         font: {
           size: cr(12);
         }
-        .depart-after {
-          width: 100%;
-          height: 40%;
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          background-color: #f0bc76;
-          z-index: -1;
-          opacity: 0.5;
-          border-radius: cr(5);
-        }
+        color: #F0B376;
       }
     }
     span {

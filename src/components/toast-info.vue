@@ -1,17 +1,20 @@
 <template>
-    <div class="container">
+    <div class="container" @click="checkMedal">
         <div class="info">
             2个新的志愿者徽章
         </div>
     </div>
 </template>
 <script>
+import { jumpTo } from '@/utils/wxFunc'
 export default {
     data() {
 
     },
-    methods() {
-
+    methods: {
+        checkMedal() {
+            jumpTo('../medal/main')
+        }
     }
 }
 </script>

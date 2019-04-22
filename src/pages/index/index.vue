@@ -1,7 +1,7 @@
 <template>
   <div class="container" ref="contain">
     <div class="fixed-part">
-      <Title :showCircle="true" @submitCancel="changeToast"></Title>
+      <Title :showCircle=true @submitCancel="changeToast"></Title>
     </div>
     <index-content></index-content>
     <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast">

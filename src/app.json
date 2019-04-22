@@ -1,11 +1,13 @@
 {
   "pages": [
-    "pages/index/main",
-    "pages/home/main",
     "pages/sendPicture/main",
-    "pages/depart/main",
+    "pages/enrollForm/main",
+    "pages/index/main",
+    "pages/resume/main",
+    "pages/home/main",
     "pages/counter/main",
     "pages/upload/main",
+    "pages/medal/main",
     "pages/preview/main",
     "pages/authorize/main"
   ],

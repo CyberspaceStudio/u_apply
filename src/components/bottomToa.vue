@@ -33,11 +33,24 @@ export default {
 
 <style lang="scss" scoped>
 .bottom_toast {
-    padding: 30rpx;
-    padding-bottom: 90rpx;
-    border-radius: 12rpx 0;
-    z-index: 1000;
-    background: white;
+  padding: 30rpx;
+  padding-bottom: 90rpx;
+  border-radius: 12rpx 0;
+  z-index: 999;
+  background: white;
+  position: fixed;
+  width: 100vw;
+  max-height: 774rpx;
+  overflow: scroll;
+  box-sizing: border-box;
+  .close {
+    position: absolute;
+    top: 15rpx;
+    right: 25rpx;
+    width: 35rpx;
+    height: 35rpx;
+  }
+  .bnt-cancle {
     position: fixed;
     width: 100vw;
     max-height: 400rpx;
@@ -64,8 +77,12 @@ export default {
 }
 
 .test {
+<<<<<<< HEAD
+  text-align: center;
+=======
     text-align: center;
     color: white;
+>>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 .animation-up {
@@ -84,6 +101,14 @@ export default {
 }
 
 @keyframes bottom-toast-up {
+<<<<<<< HEAD
+  0% {
+    bottom: -400rpx;
+  }
+  100% {
+    bottom: 0;
+  }
+=======
     from {
         bottom: -400rpx;
     }
@@ -91,6 +116,7 @@ export default {
     to {
         bottom: 0;
     }
+>>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 @keyframes bottom-toast-down {
@@ -104,6 +130,14 @@ export default {
 }
 
 @keyframes change-to-black {
+<<<<<<< HEAD
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.7;
+  }
+=======
     from {
         opacity: 0;
     }
@@ -111,6 +145,7 @@ export default {
     to {
         opacity: 0.7;
     }
+>>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 .backsize {
