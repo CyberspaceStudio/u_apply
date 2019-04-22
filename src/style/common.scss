@@ -22,10 +22,12 @@ $scale:2.34375rpx;
 @mixin flex_row{
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 @mixin flex_column{
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 @mixin flex_between{
   justify-content: space-between;

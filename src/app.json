@@ -7,7 +7,9 @@
     "pages/home/main",
     "pages/counter/main",
     "pages/upload/main",
-    "pages/medal/main"
+    "pages/medal/main",
+    "pages/preview/main",
+    "pages/authorize/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -18,23 +20,22 @@
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#101010",
-    "borderStyle": "black" ,
-       "list": [{
-         "selectedIconPath": "/static/images/icons/classification2.png",
-         "iconPath": "/static/images/icons/classification.png",
-           "pagePath": "pages/depart/main",
-           "text": "部门"
-         }, {
-           "selectedIconPath": "/static/images/icons/moments2.png",
-           "iconPath": "/static/images/icons/moments.png",
-         "pagePath": "pages/index/main",  
-         "text": "志愿圈"
-         },{
-           "selectedIconPath": "/static/images/icons/mine2.png",
-           "iconPath": "/static/images/icons/mine.png",
-           "pagePath": "pages/home/main",
-           "text": "我的主页"
-         }
-       ]
+    "borderStyle": "black",
+    "list": [{
+      "selectedIconPath": "/static/images/icons/classification2.png",
+      "iconPath": "/static/images/icons/classification.png",
+      "pagePath": "pages/depart/main",
+      "text": "部门"
+    }, {
+      "selectedIconPath": "/static/images/icons/moments2.png",
+      "iconPath": "/static/images/icons/moments.png",
+      "pagePath": "pages/index/main",
+      "text": "志愿圈"
+    }, {
+      "selectedIconPath": "/static/images/icons/mine2.png",
+      "iconPath": "/static/images/icons/mine.png",
+      "pagePath": "pages/counter/main",
+      "text": "我的主页"
+    }]
   }
 }
