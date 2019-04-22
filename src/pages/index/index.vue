@@ -16,7 +16,6 @@
         </div>
       </div>
     </bottom-toast>
-    <!-- <bottom-toast :show="showToast"></bottom-toast> -->
     <add-btn></add-btn>
   </div>
 </template>
@@ -26,18 +25,14 @@ import Title from "../../components/Title";
 import addBtn from "../../components/add-btn";
 import indexContent from "../../components/index-content";
 import bottomToast from "../../components/bottomToa";
-// import bottomToast from '../../components/bottom-toast'
+import {checkScope,jumpTo,showModal} from '@/utils/index'
 
 export default {
-  mounted() {
-    this.$nextTick(function() {
-      // this.$refs.text.value='这里是';
-    });
-  },
   data() {
     return {
       showToast: false,
-      toastIndex: 0
+      toastIndex: 0,
+      currPagePath:''
     };
   },
   components: {
@@ -53,15 +48,26 @@ export default {
     changeToast() {
       this.showToast = true;
     },
-    onShareAppMessage(res) {
-      return {
-        title: "志愿圈",
-        path: "/pages/index/main"
-      };
-    },
-    onReachBottom() {
-      console.log("数据获取中...");
+    _getCurrPath(){
+      this.currPagePath=this.$mp.page.route;  
     }
+  },
+  onLoad(){
+    this._getCurrPath();
+    checkScope().then(res=>{
+      if(!res.authSetting['scope.userInfo']){
+        jumpTo('/pages/authorize/main',{beforePath:`${this.currPagePath}`})
+      }
+    }).catch(err=>{
+    })
+    wx.login({
+      success(res){
+        console.log(res)
+      },
+      fail(err){
+        console.log(err)
+      }
+    })
   }
 };
 </script>
