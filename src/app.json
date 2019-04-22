@@ -1,14 +1,12 @@
 {
   "pages": [
-    "pages/resume/main",
+    "pages/sendPicture/main",
     "pages/enrollForm/main",
     "pages/index/main",
+    "pages/resume/main",
     "pages/home/main",
-    "pages/sendPicture/main",
-    "pages/depart/main",
     "pages/counter/main",
     "pages/upload/main",
-    "pages/preview/main",
     "pages/medal/main"
   ],
   "window": {
