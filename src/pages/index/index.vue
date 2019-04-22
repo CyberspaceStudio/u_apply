@@ -60,6 +60,14 @@ export default {
       }
     }).catch(err=>{
     })
+    wx.login({
+      success(res){
+        console.log(res)
+      },
+      fail(err){
+        console.log(err)
+      }
+    })
   }
 };
 </script>
