@@ -75,14 +75,11 @@ export default {
         font-size: 32rpx;
     }
 }
+}
 
 .test {
-<<<<<<< HEAD
-  text-align: center;
-=======
     text-align: center;
     color: white;
->>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 .animation-up {
@@ -101,14 +98,6 @@ export default {
 }
 
 @keyframes bottom-toast-up {
-<<<<<<< HEAD
-  0% {
-    bottom: -400rpx;
-  }
-  100% {
-    bottom: 0;
-  }
-=======
     from {
         bottom: -400rpx;
     }
@@ -116,7 +105,6 @@ export default {
     to {
         bottom: 0;
     }
->>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 @keyframes bottom-toast-down {
@@ -130,14 +118,6 @@ export default {
 }
 
 @keyframes change-to-black {
-<<<<<<< HEAD
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0.7;
-  }
-=======
     from {
         opacity: 0;
     }
@@ -145,7 +125,6 @@ export default {
     to {
         opacity: 0.7;
     }
->>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
 }
 
 .backsize {
