@@ -49,11 +49,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-<<<<<<< HEAD
 .title {
-=======
-.container {
->>>>>>> 820f85dbe5ed52ed8d5b4df01f8e18381a8324bc
   width: $full_width;
   height: cr(60);
   position: relative;

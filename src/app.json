@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/sendPicture/main",
-    "pages/enrollForm/main",
-    "pages/index/main",
     "pages/resume/main",
+    "pages/enrollForm/main",
+    "pages/depart/main",
+    "pages/sendPicture/main",
+    "pages/index/main",
     "pages/home/main",
     "pages/counter/main",
     "pages/upload/main",
@@ -34,7 +35,7 @@
     }, {
       "selectedIconPath": "/static/images/icons/mine2.png",
       "iconPath": "/static/images/icons/mine.png",
-      "pagePath": "pages/counter/main",
+      "pagePath": "pages/home/main",
       "text": "我的主页"
     }]
   }
