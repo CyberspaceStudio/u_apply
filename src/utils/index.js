@@ -1,4 +1,3 @@
-const FILE_PATH = 'http://localhost:8080';
 
 function getUserInfo () {
   return new Promise ((resolve, reject) => {
@@ -31,7 +30,7 @@ function scanCode () {
   content：模态框内容主体
 }
 */
-function showModal (title, content='') {
+function showModal (title, content = '') {
   wx.showModal ({
     title,
     content,
@@ -44,6 +43,15 @@ function showToast (title = '提示', icon = 'none', duration = 1500) {
     icon,
     duration,
   });
+}
+function showLoading(title='请稍等'){
+  wx.showLoading({
+    title
+  })
+}
+
+function hideLoading(){
+  wx.hideLoading()
 }
 /* 
 @params{
@@ -67,26 +75,6 @@ function jumpTo (url, params = {}) {
     url: `${url}${paramsChange (params)}`,
   });
 }
-/* 
-@params{
-  url:接口地址
-  method:请求方式
-  data:传输数据
-  dataType：返回数据格式
-}
-*/
-function request({url, method = 'GET', data = {}, dataType = 'json'}) {
-  return new Promise ((resolve, reject) => {
-    wx.request ({
-      url: `${FILE_PATH}${url}`,
-      method,
-      data,
-      dataType,
-      success: res => resolve (res),
-      fail: err => reject (err),
-    });
-  });
-}
 
 /* 
   检查用户授权情况
@@ -100,10 +88,26 @@ function checkScope () {
   });
 }
 
+function switchTab (path) {
+  wx.switchTab ({
+    url: path,
+  });
+}
 
-function switchTab(path){
-  wx.switchTab({
-    url:path
+function setStorageSync (key,value) {
+    wx.setStorageSync (key, value,)
+}
+
+function getStorageSync(key){
+  return wx.getStorageSync(key)
+}
+
+function login (){
+  return new Promise((resolve,reject)=>{
+    wx.login({
+      success:res=>resolve(res),
+      fail:err=>reject(err)
+    })
   })
 }
 
@@ -116,5 +120,10 @@ export {
   jumpTo,
   switchTab,
   request,
-  checkScope
+  checkScope,
+  setStorageSync,
+  login,
+  getStorageSync,
+  showLoading,
+  hideLoading
 };

@@ -1,27 +1,27 @@
 <template>
-<div class="container">
+<div class="container" v-if="datainit">
     <div class="content-left">
-        <div v-for="(list,index) in cover.left" :key="index" class="content-list" @click="goPreview(list.id)">
-            <img :src="list.imgList[0]" mode="widthFix">
+        <div v-for="(list,index) in cover.left" :key="index" class="content-list" @click="goPreview(list.activityId)">
+            <img :src="list.pictureUrl" mode="widthFix">
             <div class="content-text">
-                <span class="halfBackground">#{{list.uploader_depart}}-{{list.uploader_name}}</span>
-                <p>{{list.describe}}</p>
+                <span class="halfBackground">#{{list.department}}-{{list.informationName}}</span>
+                <p>{{list.content}}</p>
                 <div class="content-footer">
-                    <span>{{list.expireDate}}</span>
-                    <span class="img-content"><img src="/static/images/icons/check.png">{{list.reader_num}}人查阅</span>
+                    <span>{{list.activityTime}}</span>
+                    <span class="img-content"><img src="/static/images/icons/check.png">{{123}}人查阅</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="content-right">
-        <div v-for="(list,index) in cover.right" :key="index" class="content-list" @click="goPreview(list.id)">
-            <img :src="list.imgList[0]" mode="widthFix">
+        <div v-for="(list,index) in cover.right" :key="index" class="content-list" @click="goPreview(list.activityId)">
+            <img :src="list.pictureUrl" mode="widthFix">
             <div class="content-text">
-                <span class="halfBackground">#{{list.uploader_depart}}-{{list.uploader_name}}</span>
-                <p>{{list.describe}}</p>
+                <span class="halfBackground">#{{list.department}}-{{list.informationName}}</span>
+                <p>{{list.content}}</p>
                 <div class="content-footer">
-                    <span>{{list.expireDate}}</span>
-                    <span class="img-content"><img src="/static/images/icons/check.png">{{list.reader_num}}人查阅</span>
+                    <span>{{list.activityTime}}</span>
+                    <span class="img-content"><img src="/static/images/icons/check.png">{{123}}人查阅</span>
                 </div>
             </div>
         </div>
@@ -34,9 +34,9 @@ import {
     timestampCount
 } from '@/utils/timeCount'
 import {
-    jumpTo
+    jumpTo,showLoading,hideLoading
 } from '@/utils/index'
-const json = require('../mock/mock.json')
+import {getInitData} from '@/apis/api'
 export default {
     name: "index-content",
     data() {
@@ -45,7 +45,9 @@ export default {
                 left: [],
                 right: []
             },
-            contentLists: []
+            contentLists: [],
+            pageNumber:1,//分页页数
+            datainit:false
         };
     },
     methods: {
@@ -65,10 +67,26 @@ export default {
             this.contentLists.forEach((item, index) => {
                 item.expireDate = timestampCount(item.upload_time)
             })
+        },
+        _getData() {
+            showLoading('数据获取中')   
+            let pageNumber=this.pageNumber++;
+            getInitData({pageNumber}).then(res=>{
+                this.contentLists=this.contentLists.concat(res.data.data);
+                this.contentLists.forEach(list=>{
+                    list.activityTime=list.activityTime.split(' ')[0];
+                })
+                this._imgDivide();
+                this.datainit=true;
+                hideLoading()
+            })
         }
     },
+    onReachBottom(){
+        this._getData();
+    },
     onLoad() {
-        this.contentLists = json;
+        this._getData();//数据获取
         this._imgDivide(); //图片列表分组
         this._setExpireDate(); //过期时间初始化
     }

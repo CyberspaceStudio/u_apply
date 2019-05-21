@@ -2,10 +2,10 @@
 <div>
     <div class="backsize change-color" @touchstart="onCancel"></div>
     <div class="bottom_toast animation-up">
-        <slot>
-            <div class="test">暂时没有数据哦</div>
-        </slot>
-        <button class="bnt-cancle animation-up" @click="onCancel">取消</button>
+        <div class="touch-share">
+            <button open-type='share' class="share-btn">点击分享到微信</button>
+        </div>
+        <div class="bnt-cancle animation-up" @click="onCancel">取消</div>
     </div>
 </div>
 </template>
@@ -24,7 +24,7 @@ export default {
             console.log(res.target)
         }
         return {
-            title: '自定义转发标题',
+            title: '一起交流志愿',
             path: '/pages/index/main'
         }
     }
@@ -39,10 +39,21 @@ export default {
   z-index: 999;
   background: white;
   position: fixed;
+  left: 0;
   width: 100vw;
   max-height: 774rpx;
   overflow: scroll;
   box-sizing: border-box;
+  .share-btn{
+      width: 100%;
+      height: cr(50);
+      font-size: cr(14);
+      background-color: white;
+      &:after{
+          content:'';
+          display: none;
+      }
+  }
   .close {
     position: absolute;
     top: 15rpx;
@@ -53,11 +64,16 @@ export default {
   .bnt-cancle {
     position: fixed;
     width: 100vw;
+    left: 0;
+    height: cr(40);
+    line-height: cr(40); 
+    text-align:center;
+    font-size: cr(14);
     max-height: 400rpx;
     overflow: scroll;
     box-sizing: border-box;
 
-    .close {
+    /* .close {
         position: absolute;
         top: 15rpx;
         right: 25rpx;
@@ -73,7 +89,7 @@ export default {
         height: 80rpx;
         line-height: 80rpx;
         font-size: 32rpx;
-    }
+    } */
 }
 }
 
@@ -132,6 +148,7 @@ export default {
     filter: alpha(opacity=60);
     position: fixed;
     top: 0;
+    left:0;
     width: 100vw;
     height: 100vh;
     z-index: 999;

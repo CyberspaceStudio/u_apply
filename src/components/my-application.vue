@@ -10,7 +10,7 @@
                 <img  class="application-card-icon" v-if="imgUrl" :src="imgUrl+'wishlist.png'"/>
                 <span>招新面试</span>
             </div>
-            <div class="application-card"> 
+            <div class="application-card" @click="toEnroll"> 
                 <img  class="application-card-icon" v-if="imgUrl" :src="imgUrl+'experience.png'"/>
                 <span>招新报名</span>
             </div>
@@ -18,15 +18,19 @@
     </div>
 </template>
 <script>
+import {jumpTo} from '@/utils/index'
+import {postSign} from '@/apis/api'
 export default {
     data() {
         return {
             imgUrl: this.GLOBAL.localImg
         }
     },
-    mounted() {
-        
-    }
+    methods:{
+        toEnroll(){
+            jumpTo('/pages/enrollForm/main')
+        },
+    },
 }
 </script>
 

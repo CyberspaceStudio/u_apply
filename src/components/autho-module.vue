@@ -17,8 +17,13 @@ import {
     jumpTo,
     getUserInfo,
     switchTab,
-    showToast
-} from '@/utils/index'
+    showToast,
+    setStorageSync,
+    login
+} from '@/utils/index';
+import {
+    userLogin
+} from '../apis/api'
 export default {
     props: ['departIcon', 'departName', 'beforePath'],
     data() {
@@ -33,9 +38,27 @@ export default {
                 .catch(err => {})
         },
         checkBack() { //检查授权情况  并返回原页面
+            let nickName = '';
+            let avatarUrl = '';
             checkScope().then(res => {
                 if (res.authSetting['scope.userInfo']) {
-                    switchTab(this.beforePath);
+                    getUserInfo().then(res => {
+                        nickName = res.userInfo.nickName;
+                        avatarUrl = res.userInfo.avatarUrl;
+                        return login();
+                    }).then(res => {
+                        return userLogin({
+                            code: res.code,
+                            falseName: nickName,
+                            headPictureUrl: avatarUrl
+                        })
+                    }).then(res => {
+                        setStorageSync('cookie', res.data.session_key);
+                        setStorageSync('userInfo', res.data.data);
+                        switchTab(this.beforePath); //跳转页面
+                    }).catch(err => {
+                        // console.log(err)
+                    })
                 } else {
                     showToast('请先完成授权')
                 }
