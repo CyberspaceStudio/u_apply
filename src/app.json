@@ -1,5 +1,8 @@
 {
   "pages": [
+    "pages/sexnumber/main",
+    "pages/thenumber/main",
+    "pages/statistics/main",
     "pages/resume/main",
     "pages/enrollForm/main",
     "pages/depart/main",
