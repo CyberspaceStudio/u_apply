@@ -1,17 +1,19 @@
-const ajax = function(url,methods='GET',data={},headers = {'Content-Type': 'application/json'}){
+const ajax = function(url,data={},method='GET',headers = {'Content-Type': 'application/json'}){
     return new Promise((resolve,reject)=>{
-        var cookies = getStorageSync('cookie')  
-        if(cookies != ''){
-            //已经得到了
-            headers['cookie'] = cookies
+        let cookies = wx.getStorageSync('cookie');  
+        if(cookies !== ''){
+            data={...data,session:cookies};
+        }
+        if(method==='POST'){
+            headers={'Content-Type': 'application/x-www-form-urlencoded'};
         }
         wx.request({
-            url: url, 
-            method:methods,
-            data: data,
+            url, 
+            method,
+            data,
             header:headers,
             success (res) {
-                if(res.data.code != 0){
+                if(res.data.errCode !== 0){
                     reject(res.data.msg)
                 }
                 else{

@@ -1,29 +1,52 @@
 <template>
   <div class="main-wrap">
     <div class="easy-info">
-      <easy-info :username='userData.uploader_name' :avatarUrl='userData.avatarUrl' :depart='userData.uploader_depart'></easy-info>
+      <easy-info :username='userData.informationName' :avatarUrl='userData.portraitUrl' :depart='userData.department' @toggleToast='toggleToast'></easy-info>
     </div>
     <div class="atlas-show">
-      <atlas-show :atlas='userData'></atlas-show>
+      <atlas-show :atlas='userData' v-if='dataInit'></atlas-show>
     </div>
+    <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast"></bottom-toast>
   </div>
 </template>
 
 <script>
 import easyInfo from '@/components/easy-info.vue'
 import atlasShow from '@/components/atlas-show.vue'
-const json = require('../../mock/mock.json')
+import bottomToast from '@/components/bottomToa.vue'
+import {getSpecificMessage,checkStatus} from '@/apis/api'
+import {hideLoading,showLoading} from '@/utils/index'
 export default {
   data(){
     return {
-      userData:null,
+      userData:{informationName:'123'},
+      searchId:'',
+      dataInit:false,
+      showToast:false
     }
   },
   components:{
-    easyInfo,atlasShow
+    easyInfo,atlasShow,bottomToast
+  },
+  methods:{
+    _getInfo(){
+      showLoading()
+      getSpecificMessage({activityId:this.searchId}).then(res=>{
+        this.userData=res.data.data;
+        this.dataInit=true;
+        hideLoading()
+      })
+    },
+    onCancel(){
+      this.showToast=false;
+    },
+    toggleToast(){
+      this.showToast=true;
+    }
   },
   onLoad(){
-    this.userData=json[0];
+    this.searchId=this.$mp.query.id;
+    this._getInfo();
   }
 }
 </script>

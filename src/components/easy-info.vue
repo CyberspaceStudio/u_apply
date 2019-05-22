@@ -4,12 +4,12 @@
       <img :src='avatarUrl'>
       <span class="user-name">{{depart}}-{{username}}</span>
     </div>
-    <img src="/static/images/icons/share.png" class="share-icon">
+    <img src="/static/images/icons/share.png" class="share-icon" @click="changeToast">
   </div>
 </template>
 
 <script>
-
+import showToast from './bottomToa.vue'
 export default {
   props:['username','avatarUrl','depart'],
   data(){
@@ -17,6 +17,14 @@ export default {
 
     }
   },
+  methods:{
+    changeToast(){
+      this.$emit('toggleToast')
+    }
+  },
+  components:{
+    showToast
+  }
 }
 </script>
 

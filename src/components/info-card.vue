@@ -1,22 +1,42 @@
 <template>
     <div class="info">
-        <img :src="url" class="info-avater"/>
+        <img :src="userInfo.headPictureUrl" class="info-avater"/>
         <div class="info-infoArea">
             <div class="info-infoArea-first">
-                <span class="info-infoArea-first-id">ID:abcdef</span>
-                <span class="info-infoArea-first-name">野马swetamily</span>
+                <span class="info-infoArea-first-id">ID:{{userInfoOnline.wechat || '乖乖'}}</span>
+                <span class="info-infoArea-first-name">{{userInfo.falseName}}</span>
             </div>
-            <span class="info-infoArea-job">青年志愿者总队成员</span>
+            <span class="info-infoArea-job">{{userInfoOnline.organization}}{{userInfoOnline.position}}</span>
         </div>
         <img class="info-scanIcon" src="/static/images/icons/scan.png"/>
     </div>
 </template>
 <script>
+import {getUserExactInfo} from '@/apis/api'
+import {getStorageSync} from '@/utils/index'
 export default {
     data() {
         return {
-            url:'https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eosdiajyuSvmwAhLsOuuOFJHPpP935Z9ETHKWZnKl2WibMdEwwhJfO0yF9eic1t9H3FqcjLwAdeIuhibg/132'
+            userInfo:null,
+            userInfoOnline:{
+                wechat:''
+            }
         }
+    },
+    methods:{
+        _getInfoOnline(){
+            getUserExactInfo({mainId:this.userInfo.mainId}).then(res=>{
+                this.userInfoOnline=res.data.data;
+                
+            })
+        },
+        _getUserInfo(){
+            this.userInfo=getStorageSync('userInfo');
+        }
+    },
+    onLoad(){
+        this._getUserInfo();
+        this._getInfoOnline();
     }
 }
 </script>

@@ -4,18 +4,16 @@
             报名总人数累计达
         </div>
         <div class="num-num">
-            <div>1</div>
-            <div>1</div>
-            <div>1</div>
+            <div v-for="(item,index) in total_number" :key="index">{{item}}</div>
         </div>
         <img class="girl"  v-if="imgUrl" :src="imgUrl+'girl.png'"/>
-        <div class="girl-num">18</div>
+        <div class="girl-num">{{full_info.woman}}</div>
         <img class="follower"  v-if="imgUrl" :src="imgUrl+'3.png'"/>
         <img class="boy"  v-if="imgUrl" :src="imgUrl+'boy.png'"/>
-        <div class="boy-num">18</div>
+        <div class="boy-num">{{full_info.man}}</div>
         <div class="jump">
             <div class="jump-title">跨部门人数</div>
-            <div class="jump-num">18</div>
+            <div class="jump-num">{{full_info.crossNumber}}</div>
         </div>
         <div class="line1">
         </div>
@@ -27,13 +25,41 @@
     </div>
 </template>
 <script>
+import {getMembersDetail} from '@/apis/api'
+import {getStorageSync} from '@/utils/index'
 export default {
     data() {
         return {
             imgUrl: this.GLOBAL.localImg,
-            sex: 'man'
+            sex: 'man',
+            userData:null,
+            total_number:null,
+            full_info:{
+                woman:0
+            },
         }
     },
+    methods:{
+        _getUserData(){
+            this.userData=getStorageSync('userInfo');
+        },
+        _getNumbers(){
+            getMembersDetail({
+                department:this.userData.department || 1,
+            }).then(res=>{
+                this.full_info=res.data.data;
+                this.total_number=this._totalInit(this.full_info.enrollNumber);
+            })
+        },
+        _totalInit(number){
+            let newArr=String(number).split('');
+            return newArr;
+        }
+    },
+    onLoad(){
+        this._getUserData();
+        this._getNumbers();
+    }
 }
 </script>
 <style lang="scss" scoped>

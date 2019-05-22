@@ -1,16 +1,15 @@
 {
   "pages": [
+    "pages/statistics/main",
+    "pages/index/main",
     "pages/sexnumber/main",
     "pages/thenumber/main",
-    "pages/statistics/main",
     "pages/resume/main",
     "pages/enrollForm/main",
     "pages/depart/main",
     "pages/sendPicture/main",
-    "pages/index/main",
     "pages/home/main",
     "pages/counter/main",
-    "pages/upload/main",
     "pages/medal/main",
     "pages/preview/main",
     "pages/authorize/main"

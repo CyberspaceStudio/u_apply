@@ -4,7 +4,6 @@
         <myApplication v-if="isManager"></myApplication>
         <toast-info v-if="isVisitor && haveNew"></toast-info>
         <my-album v-if="isVisitor"></my-album>
-        <!-- <visitor-home v-else></visitor-home> -->
     </div>
 </template>
 <script>

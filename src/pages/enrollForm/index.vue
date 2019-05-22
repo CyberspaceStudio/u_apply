@@ -5,7 +5,7 @@
             <span class="first-row">
                 <div class="input-area">
                     <img v-if="imgUrl" :src="imgUrl+'name.png'"/>
-                    <input class="enroll-name" placeholder="请输入姓名"/>
+                    <input class="enroll-name" v-model='name' placeholder="请输入姓名"/>
                 </div>
                 <span class="enroll-picker" @click="changeSex">
                     <span :class="[sex == 'man' ? 'checked' : 'unchecked']">男</span>
@@ -14,51 +14,120 @@
             </span>
             <div class="input-area">
                 <img v-if="imgUrl" :src="imgUrl+'telephone.png'"/>
-                <input type="number" class="enroll-phone"  placeholder="请输入电话号码"/>
+                <input type="number" class="enroll-phone"  placeholder="请输入电话号码" v-model="number"/>
             </div>
             <div class="input-area">
                 <img v-if="imgUrl" :src="imgUrl+'wechat2.png'"/>
-                <input class="enroll-wechat"  placeholder="请输入微信号"/>
+                <input class="enroll-wechat" v-model="wechatNumber"  placeholder="请输入微信号"/>
             </div>
             <div class="enroll-department">
                 <title>请选择你意向的部门（最多三个）</title>
                 <ul class="enroll-department-listArea">
                     <li class="enroll-department-listArea-list">
                         <span>第一志愿</span>
-                        <span>工作室</span>
+                        <picker :range='departs' :value='firstIndex' @change='firstChange'>
+                            <span class="picker">{{departs[firstIndex]}}</span>
+                        </picker>
                         <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                     <li class="enroll-department-listArea-list">
                         <span>第二志愿</span>
-                        <span>未选择</span>
+                        <picker :range='departs' :value='secondIndex' @change='secondChange'>
+                            <span class="picker">{{departs[secondIndex]}}</span>
+                        </picker>
                         <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                     <li class="enroll-department-listArea-list">
                         <span>第三志愿</span>
-                        <span>未选择</span>
+                        <picker :range='departs' :value='thirdIndex' @change='thirdChange'>
+                            <span class="picker">{{departs[thirdIndex]}}</span>
+                        </picker>
                         <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                 </ul>
             </div>
             <div class="textArea">
-                <textarea class="enroll-myself" placeholder="简述一下你自己（300字以内）" maxlength="300"></textarea>
+                <textarea class="enroll-myself" v-model="introduce" placeholder="简述一下你自己（300字以内）" maxlength="300"></textarea>
             </div>
         </article>
-        <button class="enroll-bnt">提交</button>
+        <button class="enroll-bnt" @click="submit">提交</button>
     </div>
 </template>
 <script>
+import {showToast,getStorageSync} from '@/utils/index'
+import {postSign} from '@/apis/api'
 export default {
     data() {
         return {
             imgUrl: this.GLOBAL.localImg,
-            sex: 'man'
+            name:'',
+            sex: 'man',
+            number:'',//手机号
+            wechatNumber:'',//微信号
+            introduce:'',//自我介绍
+            departs:['工作室','交流部','环保部','活动部','红十字会','支教部','培训部','项目部','秘书处','宣传部'],
+            firstIndex:0,
+            secondIndex:0,
+            thirdIndex:0,
+            format:/^1[3-9](\d{9})$/,
+            userData:null
         }
     },
     methods: {
         changeSex() {
             this.sex = this.sex == 'man' ? 'woman' : 'man';
+        },
+        firstChange(e){
+            this.firstIndex=e.mp.detail.value
+        },
+        secondChange(e){
+            this.secondIndex=e.mp.detail.value
+        },
+        thirdChange(e){
+            this.thirdIndex=e.mp.detail.value
+        },
+        _getUserData(){
+            this.userData=getStorageSync('userInfo')
+        },
+        _getSession(){
+            this.session=getStorageSync('cookie');
+        },
+        submit(){
+            if(this.name==='' || this.sex==='' || this.number === '' ||this.wechatNumber==='' || this.introduce===''){
+                showToast('输入项不能为空')
+                return false;
+            }
+            if(!this.format.test(this.number)){
+                showToast('请输入有效的手机号码')
+                return false
+            }
+            let resultArr=[this.firstIndex,this.secondIndex,this.thirdIndex];
+            let resultSet=new Set([...resultArr]);
+            if(resultArr.length!==[...resultSet].length){
+                showToast('不能重复报名同一部门');
+                return false
+            }
+            postSign({
+                mainId:this.userData.mainId,
+                realName:this.name,
+                sex:this.sex,
+                telNo:this.number,
+                wechat:this.wechatNumber,
+                school:'西安电子科技大学',
+                organization:'青志',
+                firstChoice:this.departs[this.firstIndex],
+                secondChoice:this.departs[this.secondIndex],
+                thirdChoice:this.departs[this.thirdIndex],
+                introduction:this.introduce,
+                session:this.session
+            }).then(res=>{
+                console.log(res)
+            })
         }
+    },
+    onLoad(){
+        this._getUserData();
+        this._getSession()
     }
 }
 </script>
@@ -177,6 +246,9 @@ export default {
         100% {
             background:white;
         }
+    }
+    .picker{
+        margin: cr(0) cr(10);
     }
 }
 

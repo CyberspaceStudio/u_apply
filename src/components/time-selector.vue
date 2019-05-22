@@ -51,7 +51,7 @@ export default {
         _initDate(param) { //组装2019/4数据
             let res = param.split('/');
             return {
-                currYear: res[0],
+                currYear: res[0],   
                 currMonth: res[1]
             }
         }

@@ -5,17 +5,17 @@
             <img src='/static/images/icons/bigger-medal.png' @click='setLike'>
             <span>点击图标可授予TA志愿奖章</span>
         </div>
-        <div class="like-state" v-if='isliked'>
+        <div class="like-state" v-if='isliked' @click="cancelLike">
             <img src='/static/images/icons/liked.png'>
             <span>已授予TA志愿奖章</span>
         </div>
-        <span>{{getTrulyDate}}</span>
+        <span>{{atlas.activityTime}}</span>
     </div>
     <swiper next-margin='25px' class="swiper-wrap" @change='change'>
         <swiper-item v-for='(item,index) in atlas.imgList' :key='index' class='swiper-item' @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <img :src="item" class="swiper-image">
             <div class='atlas-count'>{{index+1}}/{{atlas.imgList.length}}</div>
-            <div class='atlas-intro'>{{atlas.describe}}</div>
+            <div class='atlas-intro'>{{atlas.content}}</div>
         </swiper-item>
     </swiper>
 </div>
@@ -28,22 +28,51 @@ import {
 import {
     showToast
 } from '@/utils/index'
+import {
+    getDepartPicture,checkStatus,like,unlike
+} from '@/apis/api'
+
+import {getStorageSync} from '@/utils/index'
 export default {
-    props: ['atlas'],
+    props:['atlas'],
     data() {
         return {
             isliked: false,
             touchStartPosition: 0, //滑动开始定位
             touchMoveLenght: 0, //滑动中手势位置追踪
-            getTarget: false //是否到达最后一张
+            getTarget: false, //是否到达最后一张
+            userId:0,
+            atlas:null,
         }
     },
     computed: {
-        getTrulyDate() {
+        /* getTrulyDate() {
             return stampToDate(this.atlas.upload_time)
-        }
+        } */
     },
     methods: {
+        _getImgList() {
+            getDepartPicture({
+                activityId: this.atlas.activityId
+            }).then(res => {
+                this.atlas.imgList = res.data.data;
+            })
+        },
+        _getLikeStatus() {
+            /* 
+                用户mainId获取异常
+            */
+            checkStatus({
+                userId: 2,
+                activityId: this.atlas.activityId
+            }).then(res => {
+                if(res.data.data==='empty'){
+                    this.isliked=false;
+                }else if(res.data.data==='exits'){
+                    this.isliked=true
+                }
+            })
+        },
         touchStart(e) {
             this.touchStartPosition = e.clientX;
         },
@@ -57,8 +86,18 @@ export default {
             }
         },
         setLike() {
-            this.isliked = true;
-            //点赞数据映射
+            like({userId:this.userId,activityId:this.atlas.activityId}).then(res=>{
+                this.isliked = true;
+            })
+        },//点赞
+        cancelLike(){
+            unlike({userId:this.userId,activityId:this.atlas.activityId}).then(res=>{
+                this.isliked=false;
+            })
+        },//取消点赞
+        _getUserId(){
+            let result=getStorageSync('userInfo');
+            this.userId = result.mainId;
         },
         change(e) {
             if (e.target.current === this.atlas.imgList.length - 1) {
@@ -68,6 +107,12 @@ export default {
                 this.getTarget = false;
             }
         }
+    },
+    onLoad() {
+        this._getUserId()
+        this._getImgList()//获取图片列表
+        this._getLikeStatus()//获取点赞状态  
+        this.atlas.activityTime=this.atlas.activityTime.split(' ')[0];//后面取消
     }
 }
 </script>
