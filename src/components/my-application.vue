@@ -2,7 +2,7 @@
     <div class="application">
         <title class="application-title">我的应用</title>
         <article class="container">
-            <div class="application-card"> 
+            <div class="application-card" @click="tosex"> 
                 <img  class="application-card-icon" v-if="imgUrl" :src="imgUrl+'lookup.png'"/>
                 <span>招新数据</span>
             </div>
@@ -30,6 +30,9 @@ export default {
         toEnroll(){
             jumpTo('/pages/enrollForm/main')
         },
+        tosex(){
+            jumpTo('/pages/sexnumber/main')
+        }
     },
 }
 </script>

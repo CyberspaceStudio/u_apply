@@ -1,6 +1,9 @@
 {
   "pages": [
+    "pages/statistics/main",
     "pages/index/main",
+    "pages/sexnumber/main",
+    "pages/thenumber/main",
     "pages/resume/main",
     "pages/enrollForm/main",
     "pages/depart/main",

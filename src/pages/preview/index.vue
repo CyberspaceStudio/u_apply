@@ -33,7 +33,6 @@ export default {
       showLoading()
       getSpecificMessage({activityId:this.searchId}).then(res=>{
         this.userData=res.data.data;
-        console.log(this.userData,'数据请求')
         this.dataInit=true;
         hideLoading()
       })
