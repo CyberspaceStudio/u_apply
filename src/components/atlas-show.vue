@@ -1,21 +1,25 @@
 <template>
 <div class="main-wrap">
-    <div class="like-nav">
-        <div class="like-state" v-if='!isliked'>
+    <div class="like-nav" v-if='showLike'>
+        <div class="like-state" v-if='!showLikeClick'>
             <img src='/static/images/icons/bigger-medal.png' @click='setLike'>
             <span>点击图标可授予TA志愿奖章</span>
         </div>
-        <div class="like-state" v-if='isliked' @click="cancelLike">
+        <div class="like-state" v-if='showLikeClick' @click="cancelLike">
             <img src='/static/images/icons/liked.png'>
             <span>已授予TA志愿奖章</span>
         </div>
-        <span>{{atlas.activityTime}}</span>
+        <span>{{showTime}}</span>
+    </div>
+    <div class='self-album' v-else>
+        <div class="likers">已经有{{likerNumber}}人点赞</div>
+        <span>{{showTime}}</span>
     </div>
     <swiper next-margin='25px' class="swiper-wrap" @change='change'>
-        <swiper-item v-for='(item,index) in atlas.imgList' :key='index' class='swiper-item' @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
-            <img :src="item" class="swiper-image">
-            <div class='atlas-count'>{{index+1}}/{{atlas.imgList.length}}</div>
-            <div class='atlas-intro'>{{atlas.content}}</div>
+        <swiper-item v-for='(item,index) in imgList' :key='index' class='swiper-item' @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+            <img :src="serverURI+item" class="swiper-image" @click="preview(index)">
+            <div class='atlas-count'>{{index+1}}/{{imgList.length}}</div>
+            <div class='atlas-intro'>{{content}}</div>
         </swiper-item>
     </swiper>
 </div>
@@ -26,53 +30,28 @@ import {
     stampToDate
 } from '@/utils/timeCount'
 import {
-    showToast
+    showToast,previewImage
 } from '@/utils/index'
 import {
-    getDepartPicture,checkStatus,like,unlike
+    getLikers,checkStatus
 } from '@/apis/api'
 
 import {getStorageSync} from '@/utils/index'
 export default {
-    props:['atlas'],
+    props:['time','content','imgList','showLike','id'],
     data() {
         return {
-            isliked: false,
+            serverURI:this.GLOBAL.serverURI,
             touchStartPosition: 0, //滑动开始定位
             touchMoveLenght: 0, //滑动中手势位置追踪
             getTarget: false, //是否到达最后一张
             userId:0,
-            atlas:null,
+            showTime:'',
+            likerNumber:0,
+            isLiked:false,
         }
     },
-    computed: {
-        /* getTrulyDate() {
-            return stampToDate(this.atlas.upload_time)
-        } */
-    },
     methods: {
-        _getImgList() {
-            getDepartPicture({
-                activityId: this.atlas.activityId
-            }).then(res => {
-                this.atlas.imgList = res.data.data;
-            })
-        },
-        _getLikeStatus() {
-            /* 
-                用户mainId获取异常
-            */
-            checkStatus({
-                userId: 2,
-                activityId: this.atlas.activityId
-            }).then(res => {
-                if(res.data.data==='empty'){
-                    this.isliked=false;
-                }else if(res.data.data==='exits'){
-                    this.isliked=true
-                }
-            })
-        },
         touchStart(e) {
             this.touchStartPosition = e.clientX;
         },
@@ -82,37 +61,57 @@ export default {
         },
         touchEnd() {
             if (this.getTarget && this.touchMoveLenght < -40) {
-                console.log('数据请求')
+                // console.log('数据请求')
             }
         },
+        preview(index){
+            previewImage(this.imgList,this.imgList[index])
+        },
         setLike() {
-            like({userId:this.userId,activityId:this.atlas.activityId}).then(res=>{
-                this.isliked = true;
-            })
+            this.$emit('like')
+            this.$set( this ,'isLiked', true);
         },//点赞
         cancelLike(){
-            unlike({userId:this.userId,activityId:this.atlas.activityId}).then(res=>{
-                this.isliked=false;
-            })
+            this.$emit('cancelLike')
+            this.$set( this ,'isLiked', false);
         },//取消点赞
-        _getUserId(){
-            let result=getStorageSync('userInfo');
-            this.userId = result.mainId;
-        },
         change(e) {
-            if (e.target.current === this.atlas.imgList.length - 1) {
-                showToast('继续滑动切换下一图集');
+            if (e.target.current === this.imgList.length - 1) {
+                // showToast('继续滑动切换下一图集');
                 this.getTarget = true;
             } else {
                 this.getTarget = false;
             }
+        },
+        _getUserInfo(){
+            let res=getStorageSync('userInfo');
+            return res.mainId;
+        }
+    },
+    computed: {
+        showLikeClick(){
+            return this.isLiked
         }
     },
     onLoad() {
-        this._getUserId()
-        this._getImgList()//获取图片列表
-        this._getLikeStatus()//获取点赞状态  
-        this.atlas.activityTime=this.atlas.activityTime.split(' ')[0];//后面取消
+        this.showTime=this.time.split(' ')[0];
+        if(!this.showLike){
+            getLikers({
+                activityId:this.id
+            }).then(res=>{
+                this.likerNumber=res.data.data
+            })
+        }
+        checkStatus({
+            userId:this._getUserInfo(),
+            activityId:this.id
+        }).then(res=>{
+            if (res.data.data === 'empty') {
+                this.$set( this ,'isLiked', false);
+            } else if (res.data.data === 'exists') {
+                this.$set( this ,'isLiked', true);
+            }
+        })
     }
 }
 </script>
@@ -152,6 +151,18 @@ export default {
             line-height: cr(60);
         }
     }
+    .self-album{
+        width: 80%;
+        height: cr(60);
+        justify-content: space-between;
+        font-size: cr(12);
+        color: #8C8888;
+        font-weight: 400;
+        @include flex_row;
+        >div{
+            @include flex_row;
+        }
+    }
 
     .swiper-wrap {
         width: 100%;
@@ -181,14 +192,15 @@ export default {
             }
 
             .atlas-intro {
-                width: 80%;
                 position: absolute;
                 bottom: 0;
                 left: cr(10);
+                right: cr(10);
                 border-radius: 0 0 cr(15) cr(15);
                 background-color: rgba(0, 0, 0, .5);
                 padding-left: cr(15);
                 padding-right: cr(15);
+                box-sizing: border-box;
             }
         }
     }

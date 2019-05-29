@@ -1,9 +1,9 @@
 <template>
-   <div class='main-wrap' @click='goPreview(data.id)'>
-     <img :src='data.imgList[0]' class='cover-image'>
+   <div class='main-wrap' @click='goPreview(data.activityId)'>
+     <img :src='serverURI+data.pictureUrl' class='cover-image'>
      <div class='content-after'>
-      <span>{{data.describe}}</span>
-      <span>#{{data.uploader_depart}}-{{data.uploader_name}}</span>
+      <span>{{data.content}}</span>
+      <span>#{{data.department}}-{{data.informationName}}</span>
      </div>
    </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   props:['data'],
   data () {
     return {
-
+        serverURI:this.GLOBAL.serverURI
     }
   },
   methods:{
@@ -42,7 +42,7 @@ export default {
       left: 0;
       background-color: rgba(0,0,0,0.5);
       color: white;
-      border-radius: 0 0 cr(15) cr(15);
+      border-radius: 0 0 cr(10) cr(10);
       font-size: cr(10);
       @include flex_column;
       span{

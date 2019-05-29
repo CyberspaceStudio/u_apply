@@ -1,7 +1,7 @@
 <template>
 <div class="card" @click="toPreview">
     <div class="card-img">
-        <img :src="infos.portraitUrl" mode="aspectFill" class="card-img-content" />
+        <img :src="serverURI+infos.pictureUrl" mode="aspectFill" class="card-img-content" />
         <footer class="right-foot">4张</footer>
     </div>
     <article class="card-text">{{infos.content}}</article>
@@ -18,7 +18,7 @@ export default {
     props: ['infos'],
     data() {
         return {
-            
+            serverURI:this.GLOBAL.serverURI
         }
     },
     methods: {
@@ -66,6 +66,7 @@ export default {
     &-text {
         font-size: 28rpx;
         width: 316rpx;
+        height: cr(40);
         line-height: 40rpx;
     }
 

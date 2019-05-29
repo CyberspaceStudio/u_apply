@@ -1,9 +1,16 @@
 <template>
-<div>
+<div class="main-wrap">
     <div class="backsize change-color" @touchstart="onCancel"></div>
-    <div class="bottom_toast animation-up">
-        <div class="touch-share">
-            <button open-type='share' class="share-btn">点击分享到微信</button>
+    <div class="touch-share">
+        <div class="btns">
+            <button open-type='share' class="share-btn">
+                <img src="/static/images/icons/timg.jpeg">
+                <span>点击分享到微信</span>
+            </button>
+            <button open-type='share' class="share-btn">
+                <img src="/static/images/icons/QRcode.png">
+                <span>生成分享二维码</span>
+            </button>
         </div>
         <div class="bnt-cancle animation-up" @click="onCancel">取消</div>
     </div>
@@ -12,92 +19,68 @@
 
 <script>
 export default {
+    data(){
+        return {
+
+        }
+    },
     methods: {
         onCancel() {
             this.$emit("handleCancel");
-            wx.showTabBar({})
         }
     },
-    onShareAppMessage(res) {
-        if (res.from === 'button') {
-            // 来自页面内转发按钮
-            console.log(res.target)
-        }
-        return {
-            title: '一起交流志愿',
-            path: '/pages/index/main'
-        }
-    }
 };
 </script>
 
 <style lang="scss" scoped>
-.bottom_toast {
-  padding: 30rpx;
-  padding-bottom: 90rpx;
-  border-radius: 12rpx 0;
-  z-index: 999;
-  background: white;
-  position: fixed;
-  left: 0;
-  width: 100vw;
-  max-height: 774rpx;
-  overflow: scroll;
-  box-sizing: border-box;
-  .share-btn{
-      width: 100%;
-      height: cr(50);
-      font-size: cr(14);
-      background-color: white;
-      &:after{
-          content:'';
-          display: none;
-      }
-  }
-  .close {
-    position: absolute;
-    top: 15rpx;
-    right: 25rpx;
-    width: 35rpx;
-    height: 35rpx;
-  }
-  .bnt-cancle {
-    position: fixed;
-    width: 100vw;
-    left: 0;
-    height: cr(40);
-    line-height: cr(40); 
-    text-align:center;
-    font-size: cr(14);
-    max-height: 400rpx;
-    overflow: scroll;
-    box-sizing: border-box;
-
-    /* .close {
-        position: absolute;
-        top: 15rpx;
-        right: 25rpx;
-        width: 35rpx;
-        height: 35rpx;
-    }
-
-    .bnt-cancle {
+.main-wrap{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    @include flex_column;
+    .touch-share{
+        width: 100%;
+        z-index: 1000;
         position: fixed;
         bottom: 0;
-        left: 0rpx;
-        right: 0rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        font-size: 32rpx;
-    } */
+        left: 0;
+        background-color: white;
+        @include flex_column;
+        .btns{
+            width: 100%;
+            @include flex_row;
+            button{
+                width: 50%;
+                height: cr(80);
+                @include flex_column;
+                justify-content: space-around;
+                padding: cr(10) 0;
+                box-sizing: border-box;
+                >img{
+                    width: cr(30);
+                    height: cr(30);
+                }
+                font-size: cr(12);
+                background-color: white;
+                &::after{
+                    content:'';
+                    display: none;
+                }
+                >span{
+                    line-height: cr(12);
+                }
+            }
+        }
+    }
+    .bnt-cancle{
+        width: 100%;
+        height: cr(20);
+        text-align: center;
+        font-size: cr(12); 
+        line-height: cr(20);
+        background-color: rgba(248, 248, 248, 1);
+    }
 }
-}
-
-.test {
-    text-align: center;
-    color: white;
-}
-
 .animation-up {
     bottom: 0;
     animation: bottom-toast-up 0.1s linear;

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/statistics/main",
     "pages/index/main",
+    "pages/statistics/main",
     "pages/sexnumber/main",
     "pages/thenumber/main",
     "pages/resume/main",
@@ -17,7 +17,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "",
+    "navigationBarTitleText": "志愿圈·小程序",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

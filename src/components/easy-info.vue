@@ -24,7 +24,7 @@ export default {
   },
   components:{
     showToast
-  }
+  },
 }
 </script>
 
@@ -45,6 +45,7 @@ export default {
       img{
         width: cr(50);
         height: cr(50);
+        border-radius: 50%;
       }
       .user-name{
         margin-left: cr(25);

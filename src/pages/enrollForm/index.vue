@@ -8,8 +8,8 @@
                     <input class="enroll-name" v-model='name' placeholder="请输入姓名"/>
                 </div>
                 <span class="enroll-picker" @click="changeSex">
-                    <span :class="[sex == 'man' ? 'checked' : 'unchecked']">男</span>
-                    <span :class="[sex == 'woman' ? 'checked' : 'unchecked']">女</span>
+                    <span :class="[sex == '男' ? 'checked' : 'unchecked']">男</span>
+                    <span :class="[sex == '女' ? 'checked' : 'unchecked']">女</span>
                 </span>
             </span>
             <div class="input-area">
@@ -26,23 +26,20 @@
                     <li class="enroll-department-listArea-list">
                         <span>第一志愿</span>
                         <picker :range='departs' :value='firstIndex' @change='firstChange'>
-                            <span class="picker">{{departs[firstIndex]}}</span>
+                            <span class="picker-label">{{departs[firstIndex]}}</span>
                         </picker>
-                        <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                     <li class="enroll-department-listArea-list">
                         <span>第二志愿</span>
                         <picker :range='departs' :value='secondIndex' @change='secondChange'>
-                            <span class="picker">{{departs[secondIndex]}}</span>
+                            <span class="picker-label">{{departs[secondIndex]}}</span>
                         </picker>
-                        <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                     <li class="enroll-department-listArea-list">
                         <span>第三志愿</span>
                         <picker :range='departs' :value='thirdIndex' @change='thirdChange'>
-                            <span class="picker">{{departs[thirdIndex]}}</span>
+                            <span class="picker-label">{{departs[thirdIndex]}}</span>
                         </picker>
-                        <img v-if="imgUrl" :src="imgUrl+'pull-down.png'"/>
                     </li>
                 </ul>
             </div>
@@ -54,18 +51,18 @@
     </div>
 </template>
 <script>
-import {showToast,getStorageSync} from '@/utils/index'
+import {showToast,getStorageSync,jumpTo,switchTab} from '@/utils/index'
 import {postSign} from '@/apis/api'
 export default {
     data() {
         return {
             imgUrl: this.GLOBAL.localImg,
             name:'',
-            sex: 'man',
+            sex: '男',
             number:'',//手机号
             wechatNumber:'',//微信号
             introduce:'',//自我介绍
-            departs:['工作室','交流部','环保部','活动部','红十字会','支教部','培训部','项目部','秘书处','宣传部'],
+            departs:['请选择','网络技术工作室','交流部','环保部','活动部','红十字会','支教部','培训部','项目部','秘书处','宣传部'],
             firstIndex:0,
             secondIndex:0,
             thirdIndex:0,
@@ -75,7 +72,7 @@ export default {
     },
     methods: {
         changeSex() {
-            this.sex = this.sex == 'man' ? 'woman' : 'man';
+            this.sex = this.sex == '男' ? '女' : '男';
         },
         firstChange(e){
             this.firstIndex=e.mp.detail.value
@@ -92,6 +89,9 @@ export default {
         _getSession(){
             this.session=getStorageSync('cookie');
         },
+        _jumpTab(){
+            switchTab('/pages/home/main')
+        },
         submit(){
             if(this.name==='' || this.sex==='' || this.number === '' ||this.wechatNumber==='' || this.introduce===''){
                 showToast('输入项不能为空')
@@ -101,10 +101,21 @@ export default {
                 showToast('请输入有效的手机号码')
                 return false
             }
-            let resultArr=[this.firstIndex,this.secondIndex,this.thirdIndex];
-            let resultSet=new Set([...resultArr]);
-            if(resultArr.length!==[...resultSet].length){
-                showToast('不能重复报名同一部门');
+            if(this.firstIndex==0){
+                showToast('请至少选择一个部门意向')
+                return false;
+            }
+            let resArr=[this.firstIndex,this.secondIndex,this.thirdIndex];
+            let newArr=[];
+            for(let i=0;i<3;i++){
+                if(resArr[i]!=0){
+                    newArr.push(resArr[i])
+                }
+            }
+            let beforeLength=newArr.length;
+            let resSet=new Set([...newArr]);
+            if([...resSet].length!==beforeLength){
+                showToast('请勿选择重复部门')
                 return false
             }
             postSign({
@@ -116,15 +127,20 @@ export default {
                 school:'西安电子科技大学',
                 organization:'青志',
                 firstChoice:this.departs[this.firstIndex],
-                secondChoice:this.departs[this.secondIndex],
-                thirdChoice:this.departs[this.thirdIndex],
+                secondChoice:this.secondIndex!==0?this.departs[this.secondIndex]:'',
+                thirdChoice:this.thirdIndex!==0?this.departs[this.thirdIndex]:'',
                 introduction:this.introduce,
                 session:this.session
             }).then(res=>{
-                console.log(res)
+                showToast('报名成功','success')
+                setTimeout(this._jumpTab,1300)
+            }).catch(err=>{
+                showToast('请勿重复报名')
+                setTimeout(this._jumpTab,1300)
+                
             })
         }
-    },
+    },  
     onLoad(){
         this._getUserData();
         this._getSession()
@@ -134,6 +150,7 @@ export default {
 <style lang="scss" scoped>
 .enroll{
     padding: 0 25rpx;
+    color: #8D998A;
     title{
         font-size: 36rpx;
     }
@@ -146,10 +163,11 @@ export default {
         height: 100rpx;
     }
     input{
-        border: 4rpx solid #AEC1B5;
+        border: 4rpx solid rgba(174, 193, 181, 1);
         padding-left: 100rpx;
         box-sizing: border-box;
         font-size: 32rpx;
+        color: #8D998A;
     }
     .input-area{
         position: relative;
@@ -176,7 +194,7 @@ export default {
             @include config_width_height(120rpx,100rpx);
             text-align: center;
             line-height: 100rpx;
-            border: 4rpx solid #AEC1B5;
+            border: 4rpx solid rgba(174, 193, 181, 1);
             box-sizing: border-box;
         }
         span:last-child{
@@ -186,9 +204,8 @@ export default {
     }
     &-department{
         margin-top: 12rpx;
-        border: 4rpx solid #AEC1B5;
+        border: 4rpx solid rgba(174, 193, 181, 1);
         font-size: 32rpx;
-        color: #8D998A;
         padding: 6rpx 50rpx 0rpx 36rpx;
         title{
             font-size: 32rpx;
@@ -210,7 +227,7 @@ export default {
     }
     &-myself{
         @include config_width_height(auto,300rpx);
-        border: 4rpx solid #AEC1B5;
+        border: 4rpx solid rgba(174, 193, 181, 1);
         border-radius: 0  0 20rpx 20rpx;
         margin-top: 14rpx;
         padding: 20rpx 36rpx;
@@ -219,35 +236,40 @@ export default {
     &-bnt{
         margin-top: 36rpx;
         @include config_width_height(248rpx,94rpx);
-        background: rgb(7, 192, 69);
+        background: #7EAD9D;
         color: white;
         line-height: 94rpx;
+        box-shadow: cr(3) cr(3) cr(3) 0 #7EAD9D;
     }
     .checked{
-        background:rgb(7, 192, 69);
+        background:rgba(174, 193, 181, 1);
         animation: changeColor 0.2s linear;
+        color: #094D21;
+        font-weight: 500;
     }
     .unchecked{
         background:white;
-        animation: changeColo 0.2s linear;
+        animation: changeColor 0.2s linear;
+        color: #094D21;
+        font-weight: 500;
     }
     @keyframes changeColor {
         0% {
             background:white;
         }
         100% {
-            background:rgb(7, 192, 69);
+            background:rgba(174, 193, 181, 1);
         }
     }
     @keyframes changeColo {
         0% {
-            background:rgb(7, 192, 69);
+            background:rgba(174, 193, 181, 1);
         }
         100% {
             background:white;
         }
-    }
-    .picker{
+    }   
+    .picker-label{
         margin: cr(0) cr(10);
     }
 }

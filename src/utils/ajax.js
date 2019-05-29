@@ -4,7 +4,7 @@ const ajax = function(url,data={},method='GET',headers = {'Content-Type': 'appli
         if(cookies !== ''){
             data={...data,session:cookies};
         }
-        if(method==='POST'){
+        if(method==='POST' || method==='PUT' || method==='DELETE'){
             headers={'Content-Type': 'application/x-www-form-urlencoded'};
         }
         wx.request({
@@ -13,7 +13,7 @@ const ajax = function(url,data={},method='GET',headers = {'Content-Type': 'appli
             data,
             header:headers,
             success (res) {
-                if(res.data.errCode !== 0){
+                if(res.data.errCode === -1){
                     reject(res.data.msg)
                 }
                 else{

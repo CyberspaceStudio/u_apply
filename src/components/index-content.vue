@@ -1,27 +1,27 @@
 <template>
-<div class="container" v-if="datainit">
+<div class="container">
     <div class="content-left">
-        <div v-for="(list,index) in cover.left" :key="index" class="content-list" @click="goPreview(list.activityId)">
-            <img :src="list.pictureUrl" mode="widthFix">
+        <div v-for="(list,index) in covers.left" :key="index" class="content-list" @click="goPreview(list.activityId)">
+            <img :src="serverURI+list.pictureUrl" mode="scaleToFill">
             <div class="content-text">
                 <span class="halfBackground">#{{list.department}}-{{list.informationName}}</span>
                 <p>{{list.content}}</p>
                 <div class="content-footer">
                     <span>{{list.activityTime}}</span>
-                    <span class="img-content"><img src="/static/images/icons/check.png">{{123}}人查阅</span>
+                    <span class="img-content"><img src="/static/images/icons/check.png">{{list.readingVolume}}人查阅</span>
                 </div>
             </div>
         </div>
     </div>
     <div class="content-right">
-        <div v-for="(list,index) in cover.right" :key="index" class="content-list" @click="goPreview(list.activityId)">
-            <img :src="list.pictureUrl" mode="widthFix">
+        <div v-for="(list,index) in covers.right" :key="index" class="content-list" @click="goPreview(list.activityId)">
+            <img :src="serverURI+list.pictureUrl" mode="scaleToFill">
             <div class="content-text">
                 <span class="halfBackground">#{{list.department}}-{{list.informationName}}</span>
                 <p>{{list.content}}</p>
                 <div class="content-footer">
                     <span>{{list.activityTime}}</span>
-                    <span class="img-content"><img src="/static/images/icons/check.png">{{123}}人查阅</span>
+                    <span class="img-content"><img src="/static/images/icons/check.png">{{list.readingVolume}}人查阅</span>
                 </div>
             </div>
         </div>
@@ -39,15 +39,14 @@ import {
 import {getInitData} from '@/apis/api'
 export default {
     name: "index-content",
+    props:['covers'],
     data() {
         return {
-            cover: {
-                left: [],
-                right: []
-            },
-            contentLists: [],
+            serverURI:this.GLOBAL.serverURI,
             pageNumber:1,//分页页数
-            datainit:false
+            datainit:false,
+            isFirstLoad:true,
+            dataFree:true
         };
     },
     methods: {
@@ -56,39 +55,14 @@ export default {
                 id
             })
         },
-        _imgDivide() {
-            //将图片列表按索引分组  for瀑布流布局
-            [this.cover.left, this.cover.right] = [
-                this.contentLists.filter((item, index) => index % 2 === 0),
-                this.contentLists.filter((item, index) => index % 2 !== 0)
-            ];
-        },
         _setExpireDate() {
             this.contentLists.forEach((item, index) => {
                 item.expireDate = timestampCount(item.upload_time)
             })
         },
-        _getData() {
-            showLoading('数据获取中')   
-            let pageNumber=this.pageNumber++;
-            getInitData({pageNumber}).then(res=>{
-                this.contentLists=this.contentLists.concat(res.data.data);
-                this.contentLists.forEach(list=>{
-                    list.activityTime=list.activityTime.split(' ')[0];
-                })
-                this._imgDivide();
-                this.datainit=true;
-                hideLoading()
-            })
-        }
     },
-    onReachBottom(){
-        this._getData();
-    },
-    onLoad() {
-        this._getData();//数据获取
-        this._imgDivide(); //图片列表分组
-        this._setExpireDate(); //过期时间初始化
+    onLoad(){
+        // console.log(this.covers)
     }
 }
 </script>
@@ -120,6 +94,7 @@ export default {
 
         img {
             width: $full_width;
+            height: cr(120);
             border-radius: cr(5) cr(5) 0 0;
         }
 

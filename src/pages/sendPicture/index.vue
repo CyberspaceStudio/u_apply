@@ -12,7 +12,7 @@
         </div>
         <loaded-pic v-else :url="imgUrl" @addPic="upLoadPicture" @deletePic="deletePicture"></loaded-pic>
     </div>
-    <button class="sendPicture-config" @click="uploadFile">上传</button>
+    <button class="sendPicture-config" @click="upload">上传</button>
 </div>
 </template>
 
@@ -22,7 +22,7 @@ import promisify from "@/utils/promisify";
 import {
     chooseImage
 } from "@/utils/wxFunc"
-import {showToast,getStorageSync}from '@/utils/index'
+import {showToast,getStorageSync,jumpTo,showLoading,hideLoading}from '@/utils/index'
 import {
     uploadFile,
     getNew
@@ -32,7 +32,8 @@ export default {
         return {
             imgUrl: [],
             content:'',
-            userInfo:null
+            userInfo:null,
+            id:0
         };
     },
     computed: {
@@ -55,39 +56,49 @@ export default {
             });
         },
         _getUserInfo(){
-            this.userInfo=getStorageSync('userinfo')
+            this.userInfo=getStorageSync('userInfo')
         },
         deletePicture(data) {
             this.imgUrl.splice(data.index, 1);
         },
-        uploadFile() {
+        upload() {
             if(this.imgUrl.length===0){
                 showToast('图片不能少于一张哦')
                 return false;
             }
             getNew({
                 activityId: '',
-                informationName: this.userInfo.falseName || '海宁',
-                department: this.userInfo.department || '工作室',
+                informationName: this.userInfo.falseName,
+                department: this.userInfo.department,
                 activityTime: '',
                 content: this.content,
                 readingVolume: '0',
                 mainId: this.userInfo.mainId || 2,
                 portraitUrl: this.userInfo.headPictureUrl
-            }).then(res => {
-                return uploadFile({
-                    formData:{
-                        id:res.data.data
-                    },
-                    filePath:this.imgUrl[0]
-                })
-            }).then(res => {
-                showToast('发布成功','success');
-                this.imgUrl=[];
-                this.content='';
+            }).then(res=>{
+                this.id=res.data.data;
+                this._fileUpload()
             }).catch(err => {
-                console.log('失败')
+                console.log('失败',err)
             })
+        },
+        async _fileUpload(){
+            showLoading()
+            for(let i=0;i<this.imgUrl.length;i++){
+                try{
+                let res=await uploadFile({
+                        formData:{
+                            id:this.id
+                        },
+                        filePath:this.imgUrl[i]
+                    })
+                }catch(e){
+                    console.log(e)
+                }
+            }
+            showToast('发布成功','success');
+            this.imgUrl=[];
+            this.content='';
         }
     },
     components: {

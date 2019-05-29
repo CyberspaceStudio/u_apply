@@ -1,43 +1,25 @@
 <template>
     <div class="info">
-        <img :src="userInfo.headPictureUrl" class="info-avater"/>
+        <img :src="pictuerUrl" class="info-avater"/>
         <div class="info-infoArea">
             <div class="info-infoArea-first">
-                <span class="info-infoArea-first-id">ID:{{userInfoOnline.wechat || '乖乖'}}</span>
-                <span class="info-infoArea-first-name">{{userInfo.falseName}}</span>
+                <span class="info-infoArea-first-id">ID:{{id  || ''}}</span>
+                <span class="info-infoArea-first-name">{{name}}</span>
             </div>
-            <span class="info-infoArea-job">{{userInfoOnline.organization}}{{userInfoOnline.position}}</span>
+            <span class="info-infoArea-job">{{organization  || ''}}&nbsp;&nbsp;{{position}}</span>
         </div>
-        <img class="info-scanIcon" src="/static/images/icons/scan.png"/>
     </div>
 </template>
 <script>
 import {getUserExactInfo} from '@/apis/api'
 import {getStorageSync} from '@/utils/index'
 export default {
+    props:['pictuerUrl','id','name','organization','position'],
     data() {
         return {
-            userInfo:null,
-            userInfoOnline:{
-                wechat:''
-            }
+            showPosition:''
         }
     },
-    methods:{
-        _getInfoOnline(){
-            getUserExactInfo({mainId:this.userInfo.mainId}).then(res=>{
-                this.userInfoOnline=res.data.data;
-                
-            })
-        },
-        _getUserInfo(){
-            this.userInfo=getStorageSync('userInfo');
-        }
-    },
-    onLoad(){
-        this._getUserInfo();
-        this._getInfoOnline();
-    }
 }
 </script>
 <style lang="scss" scoped>
@@ -50,7 +32,6 @@ export default {
     &-avater{
         @include config_width_height(160rpx, 160rpx);
         border-radius: 50%;
-        background: yellow;
         margin-right: 40rpx;
     }
     &-infoArea{

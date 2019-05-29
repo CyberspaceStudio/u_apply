@@ -38,11 +38,11 @@ export default {
   methods: {
     clickShare() {
       this.$emit("submitCancel");
-      wx.hideTabBar({})
+    //   wx.hideTabBar({})
     },
     showToast(){
       this.$emit('cancel')
-      wx.hideTabBar({})
+    //   wx.hideTabBar({})
     }
   }
 };
@@ -84,7 +84,7 @@ export default {
     padding-right: cr(22);
     box-sizing: border-box;
     @include flex_row;
-    @include flex_between;
+    justify-content: space-between;
     align-items: center;
     font: {
       weight: 500;
