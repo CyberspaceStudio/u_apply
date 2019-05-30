@@ -1,7 +1,7 @@
 <template>
 <div class="mian-wrap">
     <div class='title'>
-        <Title :showCircle=false :currDepart='trulyDate.currDepart' @cancel='showToast'></Title>
+        <Title :showCircle=false :currDepart='trulyDate.currDepart || "未录取"' @cancel='showToast'></Title>
     </div>
     <div class='time-selector'>
         <time-selector :startYear='currYear' @update='updateDate' @updateYear='updateYearInfo'></time-selector>
@@ -14,6 +14,7 @@
     <div class='bottom-toast' v-if='ifShowToast'>
         <bottom-toast :departLists='json' @hidden='hiddenToast' @update='updateDepart'></bottom-toast>
     </div>
+    <div class="fixed"></div>
 </div>
 </template>
 
@@ -24,10 +25,11 @@ import dataCard from '@/components/data-card.vue'
 import bottomToast from '@/components/bottom-toast.vue'
 import {
     initCurrYear,
-    initCurrMonth
+    initCurrMonth,
+    initCurrDay
 } from '@/utils/timeCount'
 import {getDepartMemory,getOrganizationInfo} from '@/apis/api'
-import {getStorageSync} from '@/utils/index'
+import {getStorageSync,showToast} from '@/utils/index'
 const departMap={
     '网络技术工作室':'1',
     '环保部':'2',
@@ -51,8 +53,8 @@ export default {
                 currMonth: '1'
             },
             currYear:'0',
-            json:'',
-            jsonp:'',
+            json:[],
+            jsonp:[],
             startYear: 0,
             userInfo:null,
         }
@@ -64,13 +66,13 @@ export default {
         hiddenToast() {
             this.ifShowToast = false;
         },
-        updateDepart(param) { //
-        console.log(param)
+        updateDepart(param) { 
             this.trulyDate.currDepart = param;
         },
         _initData() {
             this.trulyDate.currYear = initCurrYear();
             this.currYear = initCurrYear();
+            this.trulyDate.currMonth=initCurrMonth()
             this.trulyDate.currDepart = getStorageSync('userInfo').department; //缓存获取
         },
         updateDate(param) {
@@ -78,31 +80,41 @@ export default {
         },
         updateYearInfo(param) {
             this.currYear = param;
+            this.trulyDate.currYear = param;
             this.trulyDate.currMonth = initCurrMonth();
             if (param !== initCurrYear()) {
                 this.trulyDate.currMonth = '9';
             }
         },
         _getuserInfo(){
-            this.userInfo=getStorageSync('userinfo');
+            this.userInfo=getStorageSync('userInfo');
         },
         _initDeparts(){
-            getOrganizationInfo({organization:this.userInfo.organization || '西电青年志愿者总队'}).then(res=>{
-                this.json=res.data.data;
-            })
+            if(this.userInfo.position!='0'){
+                getOrganizationInfo({organization:this.userInfo.organization}).then(res=>{
+                    this.json=res.data.data;
+                })
+            }
         }
     },
     watch: {
         trulyDate: {
             handler(newVal) {
-                getDepartMemory({
-                    department:departMap[newVal.currDepart] || 1,
-                    year:newVal.currYear,
-                    month:newVal.currMonth,
-                    day:'30'
-                }).then(res=>{
-                    this.jsonp=res.data.data
-                })
+                if(this.userInfo.position!='0'){
+                    getDepartMemory({
+                        department:departMap[this.trulyDate.currDepart] || '',  
+                        year:newVal.currYear,
+                        month:newVal.currMonth,
+                        day:'30'
+                    }).then(res=>{
+                        this.jsonp=res.data.data
+                        if(res.data.data.length===0){
+                            showToast('当前时间段没有人发圈')
+                        }
+                    })
+                }else{
+                    showToast('游客没有权限查看哦')
+                }
             },
             deep: true
         }
@@ -113,9 +125,11 @@ export default {
         dataCard,
         bottomToast
     },
-    onLoad() {
+    onShow() {
         this._getuserInfo();
         this._initDeparts();
+    },
+    onLoad(){
         this._initData();
     }
 }
@@ -126,6 +140,8 @@ export default {
     width: 100%;
     @include flex_column;
     align-items: center;
+    padding-bottom: cr(48);
+    box-sizing: border-box;
 
     .title {
         width: 100%;

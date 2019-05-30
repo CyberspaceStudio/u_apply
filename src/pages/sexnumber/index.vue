@@ -27,6 +27,19 @@
 <script>
 import {getMembersDetail} from '@/apis/api'
 import {getStorageSync} from '@/utils/index'
+const departMap={
+    '网络技术工作室':'1',
+    '环保部':'2',
+    '红十字会':'3',
+    '交流部':'4',
+    '培训部':'5',
+    '支教部':'6',
+    '宣传部':'7',
+    '项目部':'8',
+    '活动部':'9',
+    '秘书处':'10',
+    '决策层':'11',
+}
 export default {
     data() {
         return {
@@ -45,7 +58,7 @@ export default {
         },
         _getNumbers(){
             getMembersDetail({
-                department:this.userData.department || 1,
+                department:departMap[this.userData.department],
             }).then(res=>{
                 this.full_info=res.data.data;
                 this.total_number=this._totalInit(this.full_info.enrollNumber);

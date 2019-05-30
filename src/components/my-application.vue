@@ -6,7 +6,7 @@
                 <img  class="application-card-icon" v-if="imgUrl" :src="imgUrl+'lookup.png'"/>
                 <span>招新数据</span>
             </div>
-            <div class="application-card"> 
+            <div class="application-card" @click="view"> 
                 <img  class="application-card-icon" v-if="imgUrl" :src="imgUrl+'wishlist.png'"/>
                 <span>招新面试</span>
             </div>
@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-import {jumpTo} from '@/utils/index'
+import {jumpTo,showToast} from '@/utils/index'
 import {postSign} from '@/apis/api'
 export default {
     data() {
@@ -32,8 +32,11 @@ export default {
         },
         tosex(){
             jumpTo('/pages/sexnumber/main')
+        },
+        view(){
+            showToast('功能暂未开放')
         }
-    },
+    }
 }
 </script>
 

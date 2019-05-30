@@ -46,6 +46,10 @@ export default {
     onLoad(){
         this._getUserInfo();
         this._getPreviewData();
+    },
+    onShow(){
+        this._getUserInfo();
+        this._getPreviewData();
     }
 }
 </script>

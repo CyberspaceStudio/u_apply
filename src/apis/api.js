@@ -53,7 +53,7 @@ function uploadFile (data) {
     wx.uploadFile ({
       url: _setUrl ('/picture/upload'),
       ...data,
-      name: 'picture',
+      name: 'file',
       success: res => resolve (res),
       fail: err => reject (err),
     });
@@ -88,6 +88,16 @@ function unlike (data) {
  */
 function checkStatus (data) {
   return ajax (_setUrl ('/checkStatus'), data);
+}
+
+/**
+ *查询新增点赞数
+ *
+ * @param {*} data
+ * @returns
+ */
+function getLikeNumber(data){
+    return ajax(_setUrl('/new/like/number'),data)
 }
 
 /**
@@ -236,7 +246,7 @@ function getFirstViewInDepart (data) {
  * @returns
  */
 function getFinalViewInDepart (data) {
-  return ajax (_setUrl ('/wecha/interview/second/department/data'), data);
+  return ajax (_setUrl ('/wechat    /interview/second/department/data'), data);
 }
 
 /**
@@ -298,6 +308,27 @@ function postSign (data) {
 }
 
 /**
+ *新增点赞消息查询
+ *
+ * @param {*} data
+ * @returns
+ */
+function getPersonPreview(data){
+    return ajax(_setUrl('/message/personal/preview'),data)
+}
+
+/**
+ *检查登录状态
+ *
+ * @param {*} data
+ * @returns
+ */
+function checkSession(data){
+    return ajax(_setUrl('/login/check/session'),data)
+}
+
+
+/**
  *生成接口地址，辅助函数
  *
  * @param {*} api接口地址
@@ -306,6 +337,8 @@ function postSign (data) {
 function _setUrl (api) {
   return baseUrl + api;
 }
+
+
 
 export {
   userLogin,
@@ -335,5 +368,8 @@ export {
   postFirstViewResume,
   postFinalViewPresence,
   postSign,
-  getInitData
+  getInitData,
+  getLikeNumber,
+  getPersonPreview,
+  checkSession
 };

@@ -2,33 +2,33 @@
     <div class="item">
         <div class="item-content">
             <div class="item-content-left">
-                <span class="item-content-left-text">欢迎关注和使用墨刀原型快速解决原型问题</span>
-                <span class="item-content-left-new">新增奖章2枚</span>
+                <span class="item-content-left-text">{{data.content}}</span>
                 <footer class="item-content-footer">
-                    <span>刚刚</span>
-                    <div><img src="/static/images/icons/check.png"/> 10人</div>
+                    <span>{{data.activityTime}}</span>
+                    <div><img src="/static/images/icons/check.png"/> {{data.readingVolume}}人</div>
                 </footer>
             </div>
-            <aside class="item-content-right"></aside>
+            <aside class="item-content-right">
+                <img :src='serverURI+data.pictureUrl' class="spec-img">
+            </aside>
         </div>
-        <footer class="item-footer" @click="showToast">
-            <span>奖章数 12</span>
+        <footer class="item-footer" @click="showToast(data.activityId)">
+            <span></span>
             <span>查看赠友列表</span>
         </footer>
     </div>
 </template>
 <script>
-import bottomToast from '@/components/medal-list'
 export default {
+    props:['data'],
     data() {
-
-    },
-    components: {
-        bottomToast
+        return {
+            serverURI:this.GLOBAL.serverURI
+        }
     },
     methods: {
-        showToast() {
-            this.$emit('showToast')
+        showToast(id) {
+            this.$emit('showToast',id)
         }
     }
 }
@@ -61,12 +61,12 @@ export default {
             }
         }
         &-right{
-            background: red;
             @include config_width_height(296rpx,224rpx);
             border-radius: 3rpx;
         }
         &-footer{
             margin-top: 16rpx;
+            width: 80%;
             @include flex_row;
             justify-content: space-between;
             color: #807C7C;
@@ -75,14 +75,20 @@ export default {
                 align-items: center;
                 img{
                     @include config_width_height(34rpx,34rpx);
+                    margin-right: cr(4);
                 }
             }
         }
     }
     &-footer{
         @include flex_row;
+        width: 70%;
         margin: 8rpx 30rpx;
         justify-content: space-between;
     }
+}
+.spec-img{
+    width: 100%;
+    height: 100%;
 }
 </style>

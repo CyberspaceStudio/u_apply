@@ -19,16 +19,22 @@ import {
 } from '@/utils/wxToast'
 export default {
     name: "add-btn",
+    props:['position'],
     data() {
         return {
-            uploadIcon: '/static/images/icons/plus3.png'
+            uploadIcon: '/static/images/icons/plus3.png',
+            userData:null
         }
     },
     methods: {
         goUpload() {
-            jumpTo('../sendPicture/main')
+            if(this.position!='0'){
+                jumpTo('../sendPicture/main')
+            }else{
+                showToast('游客没有发圈权限哦')
+            }
         }
-    }
+    },
 }
 </script>
 

@@ -110,6 +110,14 @@ function login (){
     })
   })
 }
+function previewImage(urls,current){
+    return new Promise((resolve,reject)=>{
+        wx.previewImage({
+            urls,
+            current
+        })
+    })
+}
 
 export {
   getUserInfo,
@@ -125,5 +133,6 @@ export {
   login,
   getStorageSync,
   showLoading,
-  hideLoading
+  hideLoading,
+  previewImage
 };

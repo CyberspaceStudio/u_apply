@@ -51,6 +51,18 @@ function initCurrMonth(){
   let _date = new Date ();
   return (_date.getMonth ()+1).toString ();
 }
+function initCurrDay(){
+    let _date=new Date();
+    console.log(_date.getDay())
+    return _date.getDay().toString()
+}
+
+function getCurrTime(){
+    let _date=new Date()
+    var timestamp = Date.parse(_date);
+    let res=(new Date(timestamp)).toString().split(' ');
+    return `${res[3]}-${monthReverse[res[1]]}-${res[2]} ${res[4]}`
+}
 // 辅助函数
 
 function initMonthList (year, startMonth, endMonth) {
@@ -84,6 +96,20 @@ let monthMap = [
   'DEC',
 ]; //月份映射表
 
+let monthReverse={
+    'Jan':'01',
+    'Feb':'02',
+    'Mar':'03',
+    'Apr':'04',
+    'May':'05',
+    'Jun':'06',
+    'Jul':'07',
+    'Aug':'08',
+    'Spt':'09',
+    'Oct':'10',
+    'Nov':'11',
+    'Dec':'12'
+}
 //时间戳计算过期时间
 //时间戳转真实时间
 //生成时间轴
@@ -97,4 +123,5 @@ export {
   initCurrYear,
   initCurrMonth,
   generatorYearSelector,
+  getCurrTime
 };

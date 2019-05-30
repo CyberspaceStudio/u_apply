@@ -3,9 +3,9 @@
     <div class="fixed-part">
         <Title :showCircle=true @submitCancel="changeToast"></Title>
     </div>
-    <index-content></index-content>
+    <index-content :covers='cover'></index-content>
     <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast"></bottom-toast>
-    <add-btn></add-btn>
+    <add-btn :position='userData.position'></add-btn>
 </div>
 </template>
 
@@ -17,14 +17,34 @@ import bottomToast from "../../components/bottomToa";
 import {
     checkScope,
     jumpTo,
-    showModal
+    showModal,
+    showLoading,
+    hideLoading,
+    getStorageSync,
+    showToast,
+    setStorageSync,
+    login
 } from '@/utils/index'
+import {
+    getInitData,
+    checkSession,
+    userLogin
+} from '@/apis/api'
 export default {
     data() {
         return {
             showToast: false,
             toastIndex: 0,
-            currPagePath: ''
+            currPagePath: '',
+            datainit: true,
+            pageNumber: 1,
+            contentLists: [],
+            dataFree: true,
+            cover: {
+                left: [],
+                right: []
+            },
+            userData: null,
         };
     },
     components: {
@@ -43,22 +63,102 @@ export default {
         _getCurrPath() {
             this.currPagePath = this.$mp.page.route;
         },
+        _getBottomData() {
+            showLoading('数据获取中')
+            let pageNumber = this.pageNumber++;
+            getInitData({
+                pageNumber
+            }).then(res => {
+                if (res.data.data.length === 0) {
+                    this.dataFree = false;
+                }
+                this.contentLists = this.contentLists.concat(res.data.data);
+                this.contentLists.forEach(list => {
+                    list.activityTime = list.activityTime.split(' ')[0];
+                })
+                this._imgDivide()
+                hideLoading()
+            })
+        },
+        _getData() {
+            let pageNumber = this.pageNumber++;
+            getInitData({
+                pageNumber: 1
+            }).then(res => {
+                if (res.data.data.length === 0) {
+                    this.dataFree = false;
+                }
+                this.contentLists = res.data.data;
+                this.contentLists.forEach(list => {
+                    list.activityTime = list.activityTime.split(' ')[0];
+                })
+                this._imgDivide()
+            })
+        },
+        _getUserInfo() {
+            this.userData = getStorageSync('userInfo')
+        },
+        _imgDivide() {
+            //将图片列表按索引分组  瀑布流布局
+            [this.cover.left, this.cover.right] = [
+                this.contentLists.filter((item, index) => index % 2 === 0),
+                this.contentLists.filter((item, index) => index % 2 !== 0)
+            ];
+        },
     },
-    
+    onShareAppMessage(res) {
+        return {
+            title: '志愿圈',
+            path: '/pages/index/main'
+        }
+    },
     onLoad() {
         this._getCurrPath();
-        checkScope().then(res=>{
-          if(!res.authSetting['scope.userInfo']){
-            jumpTo('/pages/authorize/main',{beforePath:`${this.currPagePath}`})
-          }
-        }).catch(err=>{
-
+        checkScope().then(res => {
+            if (!res.authSetting['scope.userInfo']) {
+                jumpTo('/pages/authorize/main', {
+                    beforePath: `${this.currPagePath}`
+                })
+            } else {
+                return checkSession()
+            }
+        }).then(res => {
+            if (res.data.errCode != 0) {
+                return login()
+            }else{
+                throw new Error('user has already login')
+            }
+        }).then(res => {
+            showLoading('登陆中...')
+            return userLogin({
+                code: res.code,
+                falseName: this.userData.falseName,
+                headPictureUrl: this.userData.headPictureUrl
+            })
+        }).then(res => {
+            hideLoading()
+            setStorageSync('cookie', res.data.session_key);
+            setStorageSync('userInfo', res.data.data);
+        }).catch(err => {
+            // console.log(err)
         })
-    }
+    },
+    onShow() {
+        this.pageNumber = 1;
+        this.dataFree = true;
+        this._getUserInfo()
+        this._getData();
+    },
+    onReachBottom() {
+        if (this.dataFree) {
+            this._getBottomData()
+        }
+    },
 };
 </script>
 
 <style lang="scss" scoped>
+
 .container {
     width: $full_width;
     height: $full_width;

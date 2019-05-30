@@ -3,6 +3,7 @@
     <img :src='departIcon' class='icon'>
     <span class='name'>{{departName}}</span>
     <span class='list-title'>需正常使用该程序所提供服务，请授权以下信息</span>
+    <span class='list-title-free'>请等待授权登录完成后页面自动跳转</span>
     <ul class='antho-list'>
         <slot name='authoList'></slot>
     </ul>
@@ -19,7 +20,9 @@ import {
     switchTab,
     showToast,
     setStorageSync,
-    login
+    login,
+    showLoading,
+    hideLoading
 } from '@/utils/index';
 import {
     userLogin
@@ -42,6 +45,7 @@ export default {
             let avatarUrl = '';
             checkScope().then(res => {
                 if (res.authSetting['scope.userInfo']) {
+                    showLoading('授权登陆中')
                     getUserInfo().then(res => {
                         nickName = res.userInfo.nickName;
                         avatarUrl = res.userInfo.avatarUrl;
@@ -55,15 +59,16 @@ export default {
                     }).then(res => {
                         setStorageSync('cookie', res.data.session_key);
                         setStorageSync('userInfo', res.data.data);
+                        hideLoading()
                         switchTab(this.beforePath); //跳转页面
                     }).catch(err => {
-                        // console.log(err)
+
                     })
                 } else {
                     showToast('请先完成授权')
                 }
             }).catch(err => {
-
+                console.log(err)
             })
         }
     }
@@ -92,6 +97,12 @@ export default {
         width: 80%;
         font-size: cr(15);
         margin-top: cr(50);
+    }
+    .list-title-free{
+        width: 80%;
+        font-size: cr(12);
+        margin-top: cr(10);
+        color: red;
     }
 
     .info-btn {
