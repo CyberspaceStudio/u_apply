@@ -75,6 +75,7 @@ export default {
                 align-items: center;
                 img{
                     @include config_width_height(34rpx,34rpx);
+                    margin-right: cr(4);
                 }
             }
         }

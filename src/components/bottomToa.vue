@@ -7,7 +7,7 @@
                 <img src="/static/images/icons/timg.jpeg">
                 <span>点击分享到微信</span>
             </button>
-            <button open-type='share' class="share-btn">
+            <button class="share-btn" @click="showError">
                 <img src="/static/images/icons/QRcode.png">
                 <span>生成分享二维码</span>
             </button>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import {showToast} from '@/utils/index'
 export default {
     data(){
         return {
@@ -27,6 +28,9 @@ export default {
     methods: {
         onCancel() {
             this.$emit("handleCancel");
+        },
+        showError(){
+            showToast('功能暂不支持')
         }
     },
 };

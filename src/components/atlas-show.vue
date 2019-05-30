@@ -33,7 +33,7 @@ import {
     showToast,previewImage
 } from '@/utils/index'
 import {
-    getLikers,checkStatus
+    getLikers,checkStatus,like,unlike
 } from '@/apis/api'
 
 import {getStorageSync} from '@/utils/index'
@@ -52,6 +52,22 @@ export default {
         }
     },
     methods: {
+        setLike() {
+            like({
+                userId: this._getUserInfo(),
+                activityId: this.id
+            }).then(res => {
+                this.$set( this ,'isLiked', true);
+            })
+        }, //点赞
+        cancelLike() {
+            unlike({
+                userId: this._getUserInfo(),
+                activityId: this.id
+            }).then(res => {
+                this.$set( this ,'isLiked', false);
+            })
+        }, //取消点赞
         touchStart(e) {
             this.touchStartPosition = e.clientX;
         },
@@ -67,14 +83,6 @@ export default {
         preview(index){
             previewImage(this.imgList,this.imgList[index])
         },
-        setLike() {
-            this.$emit('like')
-            this.$set( this ,'isLiked', true);
-        },//点赞
-        cancelLike(){
-            this.$emit('cancelLike')
-            this.$set( this ,'isLiked', false);
-        },//取消点赞
         change(e) {
             if (e.target.current === this.imgList.length - 1) {
                 // showToast('继续滑动切换下一图集');

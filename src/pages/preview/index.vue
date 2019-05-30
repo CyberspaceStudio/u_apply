@@ -4,7 +4,7 @@
         <easy-info :username='userData.informationName' :avatarUrl='userData.portraitUrl' :depart='userData.department' @toggleToast='toggleToast'></easy-info>
     </div>
     <div class="atlas-show">
-        <atlas-show :id='searchId' :showLike='showLike' :time="userData.activityTime" :content='userData.content' :imgList='imgList' v-if="dataInit" @like='setLike' @cancelLike='cancelLike'></atlas-show>
+        <atlas-show :id='searchId' :showLike='showLike' :time="userData.activityTime" :content='userData.content' :imgList='imgList' v-if="dataInit"></atlas-show>
     </div>
     <bottom-toast :show="showToast" @handleCancel="onCancel" v-if="showToast"></bottom-toast>
 </div>
@@ -18,8 +18,6 @@ import {
     getSpecificMessage,
     checkStatus,
     getDepartPicture,
-    like,
-    unlike
 } from '@/apis/api'
 import {
     hideLoading,
@@ -47,22 +45,6 @@ export default {
         bottomToast
     },
     methods: {
-        setLike() {
-            like({
-                userId: this.userId,
-                activityId: parseInt(this.userData.activityId)
-            }).then(res => {
-                this.isliked = true;
-            })
-        }, //点赞
-        cancelLike() {
-            unlike({
-                userId: this.userId,
-                activityId: parseInt(this.userData.activityId)
-            }).then(res => {
-                this.isliked = false;
-            })
-        }, //取消点赞
         _getUserId() {
             let result = getStorageSync('userInfo');
             this.userId = result.mainId;

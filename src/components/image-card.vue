@@ -2,11 +2,11 @@
 <div class="card" @click="toPreview">
     <div class="card-img">
         <img :src="serverURI+infos.pictureUrl" mode="aspectFill" class="card-img-content" />
-        <footer class="right-foot">4张</footer>
+        <!-- <footer class="right-foot">4张</footer> -->
     </div>
     <article class="card-text">{{infos.content}}</article>
     <footer class="card-footer">
-        <span class="card-footer-time">{{infos.activityTime}}</span>
+        <span class="card-footer-time">{{activityTimeCount}}</span>
         <span class="people"><img class="check" src="/static/images/icons/check.png"/>{{infos.readingVolume}}人</span>
     </footer>
 </div>
@@ -28,9 +28,17 @@ export default {
             })
         }
     },
-    onLoad(){
+    computed: {
+      activityTimeCount(){
+          return this.infos.activityTime.split(' ')[0];
+      }  
+    },
+    /* onLoad(){
         this.infos.activityTime=this.infos.activityTime.split(' ')[0];
-    }
+    },
+    onShow(){
+        this.infos.activityTime=this.infos.activityTime.split(' ')[0];
+    } */
 }
 </script>
 
