@@ -47,7 +47,7 @@ function getNew (data) {
  * @returns
  */
 function uploadFile (data) {
-  let cookie = wx.getStorageSync('cookie');  
+  let cookie = wx.getStorageSync('cookie');
   data.formData.session=cookie;
   return new Promise ((resolve, reject) => {
     wx.uploadFile ({
@@ -337,7 +337,6 @@ function checkSession(data){
 function _setUrl (api) {
   return baseUrl + api;
 }
-
 
 
 export {
