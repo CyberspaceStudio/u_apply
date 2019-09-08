@@ -17,8 +17,8 @@
                 <input type="number" class="enroll-phone"  placeholder="请输入电话号码" v-model="number"/>
             </div>
             <div class="input-area">
-                <img v-if="imgUrl" :src="imgUrl+'wechat2.png'"/>
-                <input class="enroll-wechat" v-model="wechatNumber"  placeholder="请输入微信号"/>
+                <img v-if="imgUrl" :src="'/static/images/icons/'+'QQ2.png'"/>
+                <input class="enroll-wechat" v-model="wechatNumber"  placeholder="请输入QQ号"/>
             </div>
             <div class="enroll-department">
                 <title>请选择你意向的部门（最多三个）</title>
@@ -47,11 +47,13 @@
                 <textarea class="enroll-myself" v-model="introduce" placeholder="简述一下你自己（300字以内）" maxlength="300"></textarea>
             </div>
         </article>
-        <button class="enroll-bnt" @click="submit">提交</button>
+        <form @submit="submit" report-submit="true">
+            <button class="enroll-bnt" formType="submit">提交</button>
+        </form>
     </div>
 </template>
 <script>
-import {showToast,getStorageSync,jumpTo,switchTab} from '@/utils/index'
+import {showToast,getStorageSync,jumpTo,showLoading,hideLoading,switchTab}from '@/utils/index'
 import {postSign} from '@/apis/api'
 export default {
     data() {
@@ -62,12 +64,13 @@ export default {
             number:'',//手机号
             wechatNumber:'',//微信号
             introduce:'',//自我介绍
-            departs:['请选择','网络技术工作室','交流部','环保部','活动部','红十字会','支教部','培训部','项目部','秘书处','宣传部'],
+            departs:['请选择','网络技术工作室','交流部','环保部','活动部','红十字会','支教部','培训部','项目部','统事部','宣传部'],
             firstIndex:0,
             secondIndex:0,
             thirdIndex:0,
             format:/^1[3-9](\d{9})$/,
-            userData:null
+            userData:null,
+            formid:''
         }
     },
     methods: {
@@ -92,7 +95,11 @@ export default {
         _jumpTab(){
             switchTab('/pages/home/main')
         },
-        submit(){
+        _jumpSucc(){
+            switchTab('/pages/about/main')
+        },
+        submit(e){
+            this.formid = e.mp.detail.formId;
             if(this.name==='' || this.sex==='' || this.number === '' ||this.wechatNumber==='' || this.introduce===''){
                 showToast('输入项不能为空')
                 return false;
@@ -130,10 +137,11 @@ export default {
                 secondChoice:this.secondIndex!==0?this.departs[this.secondIndex]:'',
                 thirdChoice:this.thirdIndex!==0?this.departs[this.thirdIndex]:'',
                 introduction:this.introduce,
-                session:this.session
+                session:this.session,
+                formId:this.formid
             }).then(res=>{
                 showToast('报名成功','success')
-                setTimeout(this._jumpTab,1300)
+                setTimeout(this._jumpSucc,2500)
             }).catch(err=>{
                 showToast('请勿重复报名')
                 setTimeout(this._jumpTab,1300)

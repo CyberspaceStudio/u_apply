@@ -1,23 +1,26 @@
 {
   "pages": [
+    "pages/authorize/main",
+    "pages/about/main",
+    "pages/success/main",
+    "pages/enrollForm/main",
+    "pages/home/main",
+    "pages/interview/main",
+    "pages/thenumber/main",
     "pages/index/main",
     "pages/statistics/main",
     "pages/sexnumber/main",
-    "pages/thenumber/main",
     "pages/resume/main",
-    "pages/enrollForm/main",
     "pages/depart/main",
     "pages/sendPicture/main",
-    "pages/home/main",
     "pages/counter/main",
     "pages/medal/main",
-    "pages/preview/main",
-    "pages/authorize/main"
+    "pages/preview/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "志愿圈·小程序",
+    "navigationBarTitleText": "青志汇",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -25,20 +28,15 @@
     "selectedColor": "#101010",
     "borderStyle": "black",
     "list": [{
-      "selectedIconPath": "/static/images/icons/classification2.png",
-      "iconPath": "/static/images/icons/classification.png",
-      "pagePath": "pages/depart/main",
-      "text": "部门"
-    }, {
-      "selectedIconPath": "/static/images/icons/moments2.png",
-      "iconPath": "/static/images/icons/moments.png",
-      "pagePath": "pages/index/main",
-      "text": "志愿圈"
-    }, {
       "selectedIconPath": "/static/images/icons/mine2.png",
       "iconPath": "/static/images/icons/mine.png",
       "pagePath": "pages/home/main",
       "text": "我的主页"
+    },{
+      "selectedIconPath": "/static/images/icons/classification2.png",
+      "iconPath": "/static/images/icons/classification.png",
+      "pagePath": "pages/about/main",
+      "text": "加入我们"
     }]
   }
 }

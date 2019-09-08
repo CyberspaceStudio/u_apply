@@ -2,8 +2,8 @@
 function getUserInfo () {
   return new Promise ((resolve, reject) => {
     wx.getUserInfo ({
-      success: res => resolve (res),
-      fail: err => reject (err),
+      success: res => resolve(res),
+      fail: err => reject(err),
     });
   });
 }
@@ -102,11 +102,11 @@ function getStorageSync(key){
   return wx.getStorageSync(key)
 }
 
-function login (){
-  return new Promise((resolve,reject)=>{
+function login() {
+  return new Promise((resolve,reject) => {
     wx.login({
-      success:res=>resolve(res),
-      fail:err=>reject(err)
+      success: res => resolve(res),
+      fail: err => reject(err)
     })
   })
 }

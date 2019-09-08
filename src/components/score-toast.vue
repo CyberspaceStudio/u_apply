@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="backsize change-color"></div>
+    <div class="backsize change-color" @click="close"></div>
     <div class="scoreToast">
         <title>面试分数</title>
         <div class="scoreToast-choose">
@@ -8,26 +8,65 @@
         </div>
         <div class="scoreToast-text">
           <div class="inner" style="position:absolute">印象关键字（20字以内）</div>
-          <textarea>
+          <textarea v-model="impression">
           </textarea>
         </div>
-        <button class="scoreToast-bnt">提交</button>
+        <button class="scoreToast-bnt" @click="submit1">提交</button>
     </div>
   </div>
 </template>
 <script>
+const departMap={
+    '网络技术工作室':'1',
+    '环保部':'2',
+    '红十字会':'3',
+    '交流部':'4',
+    '培训部':'5',
+    '支教部':'6',
+    '宣传部':'7',
+    '项目部':'8',
+    '活动部':'9',
+    '统事部':'10',
+    '决策层':'11',
+}
+import {firstScore} from '@/apis/api'
+import {showToast,getStorageSync,jumpTo,showLoading,hideLoading}from '@/utils/index'
 export default {
+    props:["id"],
     data() {
       return {
         score: ['A','B','C','D','E'],
-        currentScore:''
+        currentScore:'',
+        impression:''
       }
     },
     methods:{
+      close(){
+        this.$emit('closeScore');
+      },
       chooseScore(e) {
-        this.currentScore = e
+        this.currentScore = e;
+        let dep = wx.getStorageSync('userInfo');
+      },
+      async submit1(){
+        let dep = wx.getStorageSync('userInfo').department;
+        dep = departMap[dep];
+        let info = {
+          mainId:this.id,
+          department:dep,
+          impression:this.impression,
+          score:this.currentScore
+        }
+        await firstScore(info).catch((err)=>{
+            console.log(err);
+            showToast('请求失败，请重试!');
+            throw new Error('error');
+        });
+        showToast('打分成功','success')
+        this.impression = "";
+        this.$emit('closeScore')
       }
-    }
+    },
 };
 </script>
 <style lang="scss" scoped>

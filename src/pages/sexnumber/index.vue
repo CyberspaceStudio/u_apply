@@ -37,7 +37,7 @@ const departMap={
     '宣传部':'7',
     '项目部':'8',
     '活动部':'9',
-    '秘书处':'10',
+    '统事部':'10',
     '决策层':'11',
 }
 export default {
@@ -55,6 +55,7 @@ export default {
     methods:{
         _getUserData(){
             this.userData=getStorageSync('userInfo');
+            console.log(this.userData)
         },
         _getNumbers(){
             getMembersDetail({
@@ -70,6 +71,10 @@ export default {
         }
     },
     onLoad(){
+        this._getUserData();
+        this._getNumbers();
+    },
+    onShow(){
         this._getUserData();
         this._getNumbers();
     }
@@ -119,12 +124,12 @@ export default {
     width: 168rpx;
     height: 260rpx;
     position: absolute;
-    right: 62rpx;
+    right: 60rpx;
     top: 630rpx;
 }
 .boy-num{
     position: absolute;
-    left: 355rpx;
+    left: 330rpx;
     top: 682rpx;
     font-size: 120rpx;
     color: #5792DF;

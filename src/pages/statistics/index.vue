@@ -3,9 +3,7 @@
         <div class="statistics-title">报名总人数累计达</div>
         <img class="statistics-right" v-if="imgUrl" :src="imgUrl+'5.png'"/>
         <div class="statistics-num">
-            <div>5</div>
-            <div>6</div>
-            <div>9</div>
+            <div>{{number}}</div>
         </div>
         <div class="statistics-table">
             <div class="statistics-table-title">
@@ -14,55 +12,10 @@
                 <div>跨部人数</div>
             </div>
             <div class="statistics-table-area">
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
-                </div>
-                <div class="statistics-table-area-list">
-                    <div>活动部</div>
-                    <div>230</div>
-                    <div>230</div>
+                <div class="statistics-table-area-list" v-for="(ele,index) in depList" :key="index">
+                    <div>{{ele.name}}</div>
+                    <div>{{ele.num1}}</div>
+                    <div>{{ele.num2}}</div>
                 </div>
             </div>
         </div>
@@ -71,12 +24,39 @@
     </div>
 </template>
 <script>
-// import {}
+import {showToast,getStorageSync,jumpTo,showLoading,hideLoading}from '@/utils/index'
+import {getDepNumber, getTotalNumber} from '@/apis/api'
 export default {
     data(){
         return{
             imgUrl: this.GLOBAL.localImg,
+            depList:[],
+            number:0
         }
+    },
+    async mounted(){
+        let info = await getDepNumber().catch((err)=>{
+            console.log(err);
+            showToast('请求失败，请重试!');
+            throw new Error('error');
+        })
+        let num = await getTotalNumber().catch((err)=>{
+            console.log(err);
+            showToast('请求失败，请重试!');
+            throw new Error('error');
+        })
+        this.number = num.data.data.totalNumber;
+        let keys =  Object.keys(info.data.data.crossNumber);
+        let list = [];
+        for(let i = 0;i < keys.length;i++){
+            let obj = {
+                name : keys[i],
+                num2 : info.data.data.crossNumber[keys[i]],
+                num1 : info.data.data.enrollNumber[keys[i]]
+            }
+            list.push(obj);
+        }
+        this.depList = list;
     }
 }
 </script>

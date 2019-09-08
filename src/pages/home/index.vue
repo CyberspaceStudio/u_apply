@@ -2,8 +2,7 @@
     <div class="container">
         <info-card :pictuerUrl='userInfoOnline.headPictureUrl' :id="userInfoOnline.mainId" :name='userInfoOnline.falseName' :organization='userInfoOnline.organization' :position='positionName'></info-card>
         <myApplication v-if="isManager"></myApplication>
-        <toast-info v-if="haveNew && !isVisitor" :number='likeNumbers'></toast-info>
-        <my-album v-if="isManager"></my-album>
+        <!-- <toast-info v-if="haveNew && !isVisitor" :number='likeNumbers'></toast-info> -->
         <visitor-home v-if="isVisitor"></visitor-home>
     </div>
 </template>
@@ -18,7 +17,8 @@ import {getCurrTime} from '@/utils/timeCount'
 import {getStorageSync,jumpTo,setStorageSync} from '@/utils/index'
 const positionMap={
     '0':'游客',
-    '1':'志愿圈成员'
+    '1':'志愿圈普通成员',
+    '2':'部长'
 }
 export default {
     data() {

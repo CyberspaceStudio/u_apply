@@ -14,19 +14,15 @@ import authoModule from "@/components/autho-module.vue"
   export default {
     data () {
       return {
-        departIcon:'/static/images/circle4.png',
-        departName:'志愿圈',
+        departIcon:'/static/images/C560620C33500EFB6795765475D30E43.jpg',
+        departName:'青志汇',
         authorizeLists:[
           '获取你的昵称，头像以及性别'
-        ],
-        beforePath:''
+        ]
       }
     },
     components: {
       authoModule
-    },
-    onLoad(){
-      this.beforePath=`/${this.$mp.query.beforePath}`;
     }
   }
 </script>

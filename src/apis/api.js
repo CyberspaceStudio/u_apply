@@ -3,7 +3,7 @@ import ajax_login from '@/utils/ajax_login';
 // import {}
 
 const baseUrl = 'https://chachapaofan.cn';
-
+// const baseUrl = 'http://192.168.3.51:8080';
 //接口地址  https://documenter.getpostman.com/view/6988539/S1Lu2UtH?version=latest#a3f1e8f0-49bd-4031-934a-d486a6fefe56
 //接口地址  https://documenter.getpostman.com/view/7030776/S1EWNEp6?version=latest
 
@@ -324,7 +324,29 @@ function getPersonPreview(data){
  * @returns
  */
 function checkSession(data){
-    return ajax(_setUrl('/login/check/session'),data)
+  return ajax(_setUrl('/login/check/session'),data)
+}
+
+function getDepNumber(){
+  return ajax(_setUrl('/wechat/enroll/departments/number'));
+}
+function getTotalNumber(){
+  return ajax(_setUrl('/wechat/enroll/total/number'));
+}
+function getWholeInterview(){
+  return ajax(_setUrl('/wechat/interview/total/data'));
+}
+function getDepInterview(){
+  return ajax(_setUrl('/wechat/interview/departments/data'));
+}
+function firstCheck(data){
+  return ajax(_setUrl('/wechat/interview/first/department/resume'),data,'POST');
+}
+function firstScore(data){
+  return ajax(_setUrl('/wechat/interview/first/scoring'),data,'POST');
+}
+function secondDao(data){
+  return ajax(_setUrl('/wechat/interview/second/presence'),data,'POST');
 }
 
 
@@ -370,5 +392,12 @@ export {
   getInitData,
   getLikeNumber,
   getPersonPreview,
-  checkSession
+  checkSession,
+  getDepNumber,
+  getTotalNumber,
+  getWholeInterview,
+  getDepInterview,
+  firstCheck,
+  firstScore,
+  secondDao
 };

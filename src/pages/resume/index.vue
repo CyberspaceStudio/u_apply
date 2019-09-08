@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="resume">
-            <resume-header></resume-header>
-            <score-toast v-if="isShow"></score-toast>
+            <resume-header :info="info"></resume-header>
+            <score-toast :id="id" v-if="isShow" @closeScore="isShow = false"></score-toast>
             <div class="wantApp">
                 <span class="wantApp-title">
                     <img class="wantApp-img" v-if="imgUrl" :src="imgUrl+'wishList.png'"/>
@@ -11,15 +11,15 @@
                 <ul class="wantApp-content">
                     <li>
                         <span class="wantApp-content-title">第一志愿</span>
-                        <span>活动部</span>
+                        <span>{{info.firstChoice}}</span>
                     </li>
                     <li>
                         <span class="wantApp-content-title">第二志愿</span>
-                        <span>活动部</span>
+                        <span>{{info.secondChoice}}</span>
                     </li>
                     <li>
                         <span class="wantApp-content-title">第三志愿</span>
-                        <span>活动部</span>
+                        <span>{{info.thirdChoice}}</span>
                     </li>
                 </ul>
             </div>
@@ -29,22 +29,26 @@
                     <span>自我描述</span>
                 </span>
                 <div class="description-content">
-                    牛逼
+                    {{info.introduction}}
                 </div>
             </div>
         </div>
-    <button>打分</button>
+    <button @click="giveScore">打分</button>
     </div>
 
 </template>
 <script>
 import resumeHeader from '@/components/resume-header'
 import scoreToast from '@/components/score-toast'
+import {firstCheck} from '@/apis/api'
+import {showToast,getStorageSync,jumpTo,showLoading,hideLoading}from '@/utils/index'
 export default {
     data() {
         return {
             imgUrl: this.GLOBAL.localImg,
-            isShow: false
+            isShow: false,
+            id:'',
+            info:''
         }
     },
     components: {
@@ -53,9 +57,28 @@ export default {
     },
     methods: {
         change() {
-            console.log(this.isShow)
             this.isShow = !this.isShow;
+        },
+        giveScore(){
+            this.isShow = true;
         }
+    },
+    async onLoad(options){
+        this.id = options.id;
+        let info = await firstCheck({mainId:this.id}).catch((err)=>{
+            console.log(err);
+            showToast('请求失败，请重试!');
+            throw new Error('error');
+        })
+        this.info = info.data.data;
+    },
+    async onShow(){
+        let info = await firstCheck({mainId:this.id}).catch((err)=>{
+            console.log(err);
+            showToast('请求失败，请重试!')
+            throw new Error('error');
+        })
+        this.info = info.data.data;
     }
 }
 </script>

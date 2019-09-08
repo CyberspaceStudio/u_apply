@@ -1,22 +1,12 @@
 <template>
     <div class="container">
+        <div class="title1">
+            西安电子科技大学青年志愿者总队欢迎您的加入
+        </div>
         <div class="join" @click="jumpIn">
             <div class="aa"></div>
-            <div class="title">普通游客权限</div>
-            <div class="content">浏览志愿圈图集</div>
-            <div class="content">点此处报名</div>
-        </div>
-        <div class="quanxian">
-            <div class="aa"></div>
-            <div class="title">志愿圈成员权限</div>
-            <div class="content">发布志愿图集</div>
-            <div class="content">查看部门图集</div>
-            <div class="content">添加图集发布者微信</div>
-            <div class="content">查看其他志愿者图集</div>
-        </div>
-        <div class="bottom">
-            <div class="title">加入志愿圈</div>
-            <div class="content">以志愿组织的形式注册成为志愿圈成员详情请访问 www.zhiyuanquan.com </div>
+            <div class="title">报名入口</div>
+            <div class="content">点击进入本校志愿组织报名通道</div>
         </div>
     </div>
 </template>
@@ -40,11 +30,12 @@ export default {
     align-items: center;
 }
 .join{
+    margin-top:120rpx;
     padding: 5rpx 40rpx;
     box-sizing: border-box;
     width: 692rpx;
     position: relative;
-    height: 190rpx;
+    height: 140rpx;
     border-radius: 15rpx;
     line-height: 60rpx;
     background-color: rgba(255, 255, 255, 0.5);
@@ -67,7 +58,7 @@ export default {
     }
 }
 .quanxian{
-    margin-top: 40rpx;
+    margin-top: 60rpx;
     padding: 5rpx 40rpx;
     box-sizing: border-box;
     width: 692rpx;
@@ -124,5 +115,14 @@ export default {
         left: 0;
         top: 0;
     }
+}
+.title1{
+    font-weight: bolder;
+    line-height: 75rpx;
+    font-size: 48rpx;
+    margin: 0rpx 60rpx;
+    text-align: center; 
+    color: #628E89;
+    margin-top: 40rpx;
 }
 </style>

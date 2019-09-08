@@ -3,22 +3,23 @@
             <img class="resume-info-avater" v-if="imgUrl" :src="imgUrl+'11.JPG'"/>
             <aside>
                 <div>
-                    <span>苏果他</span>
-                    <span>男</span>
+                    <span>{{info.realName}}</span>
+                    <span>{{info.sex}}</span>
                 </div>
                 <span class="resume-info-right">
                     <img class="resume-info-right-icon" v-if="imgUrl" :src="imgUrl+'telephone2.png'"/>
-                    <span>1234567891234</span>
+                    <span>{{info.telNo}}</span>
                 </span>
                 <span class="resume-info-right">
-                    <img  class="resume-info-right-icon"  v-if="imgUrl" :src="imgUrl+'wechat.png'"/>
-                    <span>1234567891234</span>
+                    <img  class="resume-info-right-icon"  v-if="imgUrl" :src="'/static/images/icons/'+'QQ.png'"/>
+                    <span>{{info.wechat}}</span>
                 </span>
             </aside>
         </div>
 </template>
 <script>
 export default {
+    props:["info"],
     data() {
         return {
             imgUrl: this.GLOBAL.localImg,
